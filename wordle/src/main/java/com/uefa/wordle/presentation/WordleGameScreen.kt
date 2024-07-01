@@ -1,6 +1,7 @@
 package com.uefa.wordle.presentation
 
 import android.app.GameState
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,6 +29,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -215,56 +217,99 @@ internal fun GuessBoard(state: WordleGameContract.State) {
         (0 until 5).forEach { rowIndex ->
             Row {
                 (0 until state.targetWord.length).forEach { colIndex ->
-                    val letter = getCurrentGridLetter(gameState = state,rowIndex = rowIndex, colIndex = colIndex)
-                    Box(
+                    val letter = getCurrentGridLetter(
+                        gameState = state,
+                        rowIndex = rowIndex,
+                        colIndex = colIndex
+                    )
+
+                    val targetColor =
+                        getLetterColor(state = state, rowIndex = rowIndex, letter = letter)
+                    val isFlipped = state.guesses.size > rowIndex
+
+                    FlipCard(
                         modifier = Modifier
                             .width(55.dp)
                             .height(60.dp)
                             .padding(5.dp)
-                            .background(
-                                getLetterColor(state = state, rowIndex = rowIndex, letter = letter),
-                                shape = RoundedCornerShape(14.dp)
-                            )
                             .border(
                                 1.dp,
-                                if(!shouldHighlightBorder(gameState = state,rowIndex = rowIndex, colIndex = colIndex)) Color.Transparent
+                                if (!shouldHighlightBorder(
+                                        gameState = state,
+                                        rowIndex = rowIndex,
+                                        colIndex = colIndex
+                                    )
+                                ) Color.Transparent
                                 else Theme.colors.base.accent01,
                                 shape = RoundedCornerShape(14.dp)
-                            )
-
-                        ,
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            letter.toString(),
-                            fontSize = 24.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.ExtraBold
-                        )
-                    }
+                            ),
+                        cardColors = targetColor,
+                        front = {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    letter.toString(),
+                                    fontSize = 24.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            }
+                        },
+                        back = {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    letter.toString(),
+                                    fontSize = 24.sp,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                            }
+                        },
+                        isFlipped = isFlipped
+                    )
                 }
             }
         }
     }
 }
 
-internal fun getCurrentGridLetter(gameState: WordleGameContract.State, rowIndex: Int, colIndex: Int): Char {
+internal fun getCurrentGridLetter(
+    gameState: WordleGameContract.State,
+    rowIndex: Int,
+    colIndex: Int
+): Char {
     val isCurrentRow = rowIndex == gameState.guesses.size
-    return if(isCurrentRow)
-        gameState.currentGuess.getOrNull(colIndex) ?:' '
+    return if (isCurrentRow)
+        gameState.currentGuess.getOrNull(colIndex) ?: ' '
     else gameState.guesses.getOrNull(rowIndex)?.getOrNull(colIndex) ?: ' '
 }
 
-internal fun shouldHighlightBorder(gameState: WordleGameContract.State, rowIndex: Int, colIndex: Int): Boolean {
+internal fun shouldHighlightBorder(
+    gameState: WordleGameContract.State,
+    rowIndex: Int,
+    colIndex: Int
+): Boolean {
     return rowIndex == gameState.guesses.size && colIndex == gameState.currentGuess.length
 }
 
-internal fun shouldHighlightBackground(gameState: WordleGameContract.State, rowIndex: Int): Boolean {
+internal fun shouldHighlightBackground(
+    gameState: WordleGameContract.State,
+    rowIndex: Int
+): Boolean {
     return rowIndex < gameState.guesses.size
 }
 
-internal fun getLetterColor(state: WordleGameContract.State,rowIndex:Int, letter: Char): Color {
-    return if(shouldHighlightBackground(gameState = state,rowIndex = rowIndex)) when (state.keyboardState[letter]) {
+internal fun getLetterColor(state: WordleGameContract.State, rowIndex: Int, letter: Char): Color {
+    return if (shouldHighlightBackground(
+            gameState = state,
+            rowIndex = rowIndex
+        )
+    ) when (state.keyboardState[letter]) {
         LetterStatus.CORRECT -> Color.Green
         LetterStatus.PRESENT -> Color.Yellow
         LetterStatus.ABSENT -> Theme.colors.elevation.elevation03
@@ -284,12 +329,13 @@ internal fun getKeyboardColor(keyboardState: Map<Char, LetterStatus>, letter: Ch
     }
 }
 
-fun isCharEmpty(c: Char): Boolean {
-    return c.isWhitespace()
-}
 
 @Composable
-fun GridKeyboard(keyboardState: Map<Char, LetterStatus>,onKeyPress: (Char) -> Unit, onBackspacePress: () -> Unit) {
+fun GridKeyboard(
+    keyboardState: Map<Char, LetterStatus>,
+    onKeyPress: (Char) -> Unit,
+    onBackspacePress: () -> Unit
+) {
     val keys = listOf(
         listOf('Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'),
         listOf('A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'),
@@ -320,14 +366,13 @@ fun GridKeyboard(keyboardState: Map<Char, LetterStatus>,onKeyPress: (Char) -> Un
                                 .border(
                                     width = 1.dp,
                                     Color.White.copy(0.25f),
-                                        RoundedCornerShape(14.dp)
+                                    RoundedCornerShape(14.dp)
                                 )
                                 .background(
-                                    color = getKeyboardColor(keyboardState = keyboardState,letter),
+                                    color = getKeyboardColor(keyboardState = keyboardState, letter),
                                     shape = RoundedCornerShape(14.dp)
                                 )
-                                .clickable { onKeyPress(letter) }
-                            ,
+                                .clickable { onKeyPress(letter) },
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
