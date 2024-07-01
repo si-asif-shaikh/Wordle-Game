@@ -1,0 +1,108 @@
+[versions]
+
+agp = "8.2.2"
+kotlin = "1.9.22"
+ksp = "1.9.22-1.0.17"
+gh = "2024.04.02" #"2023.09.05" # or use spanshots - 0.0.0-SNAPSHOT
+core = "1.12.0"
+compose = "2024.01.00"
+compose-compiler = "1.5.8"
+accompanist = "0.30.1"
+appcompat = "1.6.1"
+activity = "1.7.2"
+navigation = "2.7.6"
+lifecycle = "2.7.0"
+paging = "3.2.1"
+daggerHilt = "2.50"
+hiltNavigation = "1.1.0"
+coil = "2.4.0"
+room = "2.6.1"
+retrofit = "2.9.0"
+moshi = "1.15.1"
+okhttp = "4.12.0"
+ads = "22.6.0"
+tagmanager = "18.0.3"
+
+datastore = "1.0.0"
+gh-core = "2023.08.04"
+google-material = "1.9.0"
+
+lottie-compose = '6.2.0'
+
+# Test
+test-espresso = "3.5.1"
+test-junit = "4.13.2"
+test-junit-ext = "1.1.5"
+gson = "2.10.1"
+
+
+[libraries]
+#AndroidX
+androidx-core = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
+navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+
+#Dependency injection
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "daggerHilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "daggerHilt" }
+hilt-navigation = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation" }
+
+#Gaming hub core
+gh = { module = "com.uefa.gaminghub.core:bom", version.ref = "gh" }
+gh-lib = { module = "com.uefa.gaminghub.core:lib" }
+gh-dev = { module = "com.uefa.gaminghub.core:dev" }
+gh-editorial = { module = "com.uefa.gaminghub.core:ui-shared-editorial" }
+theme-core = { module = "com.uefa.gaminghub.core:ui-shared-theme-core" }
+theme-ucl = { module = "com.uefa.gaminghub.core:ui-shared-theme-ucl" }
+theme-uwcl = { module = "com.uefa.gaminghub.core:ui-shared-theme-uwcl" }
+theme-euro = { module = "com.uefa.gaminghub.core:ui-shared-theme-euro" }
+
+#compose
+compose = { module = "androidx.compose:compose-bom", version.ref = "compose" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-material = { module = "androidx.compose.material:material" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+livedata = { module = "androidx.compose.runtime:runtime-livedata" }
+
+#Test
+test-junit = { group = "junit", name = "junit", version.ref = "test-junit" }
+test-android-junit-ext = { group = "androidx.test.ext", name = "junit", version.ref = "test-junit-ext" }
+test-android-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "test-espresso" }
+
+#Google
+google-material = { group = "com.google.android.material", name = "material", version.ref = "google-material" }
+google-gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+google-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "ads" }
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
+network-logger = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+room = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
+lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
+lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+
+coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
+
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+
+#{module = "org.jetbrains.kotlinx:kotlinx-coroutines-android"}
+
+[plugins]
+application = { id = "com.android.application", version.ref = "agp" }
+library = { id = "com.android.library", version.ref = "agp" }
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
+kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+
+
+[bundles]
+theme = ["androidx-core", "compose-ui"]
