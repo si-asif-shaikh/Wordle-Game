@@ -46,11 +46,10 @@ import com.uefa.gaminghub.R
 import com.uefa.wordle.core.presentation.TopAppToolbar
 import com.uefa.wordle.theming.Theme
 
-object WordleGame {
-    @Composable
-    fun open() {
-        WordleGameScreenRoot()
-    }
+
+@Composable
+fun WordleGame(){
+    WordleGameScreenRoot()
 }
 
 @Composable

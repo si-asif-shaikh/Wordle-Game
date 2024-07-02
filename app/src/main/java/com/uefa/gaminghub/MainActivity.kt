@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     if (openWordleGame) {
-                        WordleGame.open()
+                        WordleGame()
 //                            openWordleGame = false
                     }
 
