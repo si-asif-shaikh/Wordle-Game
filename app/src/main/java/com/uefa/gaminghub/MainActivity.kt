@@ -36,11 +36,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.uefa.brackets.paresantation.BracketScreen
 import com.uefa.wordle.theming.Theme
 import com.uefa.gaminghub.ui.theme.GaminghubTheme
 import com.uefa.wordle.presentation.WordleGame
-import com.uefa.wordle.presentation.pitchview.PitchView
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -50,43 +48,40 @@ class MainActivity : ComponentActivity() {
         setContent {
             GaminghubTheme {
                 // A surface container using the 'background' color from the theme
-//                Surface(
-//                    modifier = Modifier.fillMaxSize(),
-//                    color = MaterialTheme.colorScheme.background
-//                ) {
-//
-//                    var openWordleGame by remember {
-//                        mutableStateOf(false)
-//                    }
-//
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxSize(),
-//                        contentAlignment = Alignment.Center
-//                    ) {
-//
-//                        DefaultCard(
-//                            modifier = Modifier
-//                                .padding(10.dp),
-//                            onButtonClick = {
-//                                openWordleGame = true
-//                            },
-//                            imageUrl = "",
-//                            title = "Wordle",
-//                            subTitle = "Wordle Game",
-//                            buttonText = "Start"
-//                        )
-//                    }
-//
-//                    if (openWordleGame) {
-//                        WordleGame()
-////                            openWordleGame = false
-//                    }
-//
-//                }
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
 
-//                PitchView()
-                BracketScreen()
+                    var openWordleGame by remember {
+                        mutableStateOf(false)
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+
+                        DefaultCard(
+                            modifier = Modifier
+                                .padding(10.dp),
+                            onButtonClick = {
+                                openWordleGame = true
+                            },
+                            imageUrl = "",
+                            title = "Wordle",
+                            subTitle = "Wordle Game",
+                            buttonText = "Start"
+                        )
+                    }
+
+                    if (openWordleGame) {
+                        WordleGame()
+//                            openWordleGame = false
+                    }
+
+                }
             }
         }
     }

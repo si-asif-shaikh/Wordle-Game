@@ -17,4 +17,3 @@ rootProject.name = "gaminghub"
 include(":app")
 include(":wordle")
 //include(":wordlegame")
-include(":brackets")
