@@ -36,6 +36,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.uefa.bracket.paresantation.BracketScreen
 import com.uefa.wordle.theming.Theme
 import com.uefa.gaminghub.ui.theme.GaminghubTheme
 import com.uefa.wordle.presentation.WordleGame
@@ -53,33 +54,35 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    var openWordleGame by remember {
-                        mutableStateOf(false)
-                    }
+//                    var openWordleGame by remember {
+//                        mutableStateOf(false)
+//                    }
+//
+//                    Box(
+//                        modifier = Modifier
+//                            .fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//
+//                        DefaultCard(
+//                            modifier = Modifier
+//                                .padding(10.dp),
+//                            onButtonClick = {
+//                                openWordleGame = true
+//                            },
+//                            imageUrl = "",
+//                            title = "Wordle",
+//                            subTitle = "Wordle Game",
+//                            buttonText = "Start"
+//                        )
+//                    }
+//
+//                    if (openWordleGame) {
+//                        WordleGame()
+////                            openWordleGame = false
+//                    }
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-
-                        DefaultCard(
-                            modifier = Modifier
-                                .padding(10.dp),
-                            onButtonClick = {
-                                openWordleGame = true
-                            },
-                            imageUrl = "",
-                            title = "Wordle",
-                            subTitle = "Wordle Game",
-                            buttonText = "Start"
-                        )
-                    }
-
-                    if (openWordleGame) {
-                        WordleGame()
-//                            openWordleGame = false
-                    }
+                    BracketScreen()
 
                 }
             }
