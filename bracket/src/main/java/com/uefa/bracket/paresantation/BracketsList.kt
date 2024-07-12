@@ -2,12 +2,17 @@ package com.uefa.bracket.paresantation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -26,22 +31,28 @@ internal fun BracketsList(rounds: List<Bracket>) {
 
     val pagerState = rememberPagerState(pageCount = {rounds.size}, initialPage = 0)
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-
+    Column(
+        modifier = Modifier
+            .verticalScroll(rememberScrollState())
     ) {
-        HorizontalPager(
-            state = pagerState,
-            contentPadding = PaddingValues(start = 16.dp, end = 32.dp),
-            modifier = Modifier
-                .fillMaxSize()
-        ) { pager ->
+        BoxWithConstraints(
+        ) {
 
-            Column(
+            val maxHeight = maxHeight
+
+            HorizontalPager(
+                state = pagerState,
+                contentPadding = PaddingValues(start = 16.dp, end = 32.dp),
                 modifier = Modifier
-                    .fillMaxSize()
-                     // Adjust the padding to control the visibility of the next item
-            ) {
+                    .fillMaxWidth()
+                    .height(maxHeight) // Adjust height as needed
+            ) { pager ->
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                    // Adjust the padding to control the visibility of the next item
+                ) {
 
 //                Text(
 //                    text = "Round ${pager + 1}",
@@ -65,15 +76,16 @@ internal fun BracketsList(rounds: List<Bracket>) {
 //                    isShowBrackets = pagerState.currentPage <= pager && (pager + 1) != rounds.size
 //                )
 
-                val previewBracket = rounds[pager]
+                    val previewBracket = rounds[pager]
 
-                BracketColumnView(
-                    bracket = previewBracket,
-                    columnIndex = pager,
-                    focusedColumnIndex = pagerState.currentPage,
-                    lastColumnIndex = pagerState.pageCount - 1
-                )
+                    BracketColumnView(
+                        bracket = previewBracket,
+                        columnIndex = pager,
+                        focusedColumnIndex = pagerState.currentPage,
+                        lastColumnIndex = pagerState.pageCount - 1
+                    )
 
+                }
             }
         }
     }

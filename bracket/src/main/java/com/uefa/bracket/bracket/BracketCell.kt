@@ -41,7 +41,7 @@ fun BracketCell(
     isLastColumn: Boolean
 ) {
     val lineColor = Color.Black
-    val height by animateDpAsState(targetValue = 100.dp * (2.0.pow(heightScalingExponent.toDouble())).toFloat())
+    val height by animateDpAsState(targetValue = 110.dp * (2.0.pow(heightScalingExponent.toDouble())).toFloat())
 
     Row(
         modifier = Modifier
@@ -63,6 +63,8 @@ fun BracketCell(
 //                animationSpec = tween(durationMillis = duration)), exit = shrinkVertically(tween(durationMillis = duration))) {
 //                TopLabelArea()
 //            }
+
+            Spacer(modifier = Modifier.height(28.dp))
 
             TeamScoreArea(isTopMatch = true,team = matchData.team1, score = matchData.team1Score)
             TeamScoreArea(isTopMatch = false,team = matchData.team2, score = matchData.team2Score)

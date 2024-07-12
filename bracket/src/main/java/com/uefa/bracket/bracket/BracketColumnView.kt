@@ -2,6 +2,7 @@ package com.uefa.bracket.bracket
 
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -21,15 +22,14 @@ fun BracketColumnView(
     focusedColumnIndex: Int,
     lastColumnIndex: Int
 ) {
-    LazyColumn(
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(0.dp)
     ) {
-        items(bracket.matches.size) { matchIndex ->
-
+        bracket.matches.forEachIndexed { matchIndex, match ->
 
             BracketCell(
-                matchData = bracket.matches[matchIndex],
+                matchData = match,
                 heightScalingExponent = columnIndex - focusedColumnIndex,
                 isTopMatch = matchIndex % 2 == 0,
                 isCollapsed = columnIndex < focusedColumnIndex,
