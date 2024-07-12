@@ -32,7 +32,7 @@ internal fun BracketsList(rounds: List<Bracket>) {
     ) {
         HorizontalPager(
             state = pagerState,
-            contentPadding = PaddingValues(horizontal = 32.dp),
+            contentPadding = PaddingValues(start = 16.dp, end = 32.dp),
             modifier = Modifier
                 .fillMaxSize()
         ) { pager ->

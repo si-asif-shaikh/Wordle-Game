@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,7 +49,7 @@ fun BracketCell(
             .height(height),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        
+
         LeftLineArea(isFirstColumn, lineColor)
 
         Column(
@@ -58,17 +59,15 @@ fun BracketCell(
 
             val duration = 500
 
-            AnimatedVisibility(visible = !isCollapsed, enter = expandVertically(
-                animationSpec = tween(durationMillis = duration)), exit = shrinkVertically(tween(durationMillis = duration))) {
-                TopLabelArea()
-            }
+//            AnimatedVisibility(visible = !isCollapsed, enter = expandVertically(
+//                animationSpec = tween(durationMillis = duration)), exit = shrinkVertically(tween(durationMillis = duration))) {
+//                TopLabelArea()
+//            }
 
-            TeamScoreArea(team = matchData.team1, score = matchData.team1Score)
-            TeamScoreArea(team = matchData.team2, score = matchData.team2Score)
+            TeamScoreArea(isTopMatch = true,team = matchData.team1, score = matchData.team1Score)
+            TeamScoreArea(isTopMatch = false,team = matchData.team2, score = matchData.team2Score)
 
-            AnimatedVisibility(visible = !isCollapsed, enter = expandVertically(tween(durationMillis = duration)) ,exit = shrinkVertically(tween(durationMillis = duration))) {
-                TouchForMoreInfoArea()
-            }
+            TouchForMoreInfoArea()
         }
 
         RightLineArea(isLastColumn, isTopMatch, height, lineColor)
@@ -160,38 +159,70 @@ fun TopLabelArea() {
 }
 
 @Composable
-fun TeamScoreArea(team: String, score: Int) {
+fun TeamScoreArea(isTopMatch:Boolean,team: String, score: Int) {
     // Define your team score area content here
-    Row(
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, color = Color.Gray)
+            .then(
+                with(Modifier) {
+                    if (isTopMatch)
+                        background(
+                            Color.Blue,
+                            shape = RoundedCornerShape(topStart = 10.dp, topEnd = 10.dp)
+                        )
+                    else
+                        background(Color.Blue)
+                }
+            )
     ) {
-        Text(
+        Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f),
-            text = team,
-        )
+                .padding(5.dp)
+        ) {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                text = team,
+                color = Color.White
+            )
 
-        Text(
-            modifier = Modifier,
-            text = score.toString(),
-        )
+            Text(
+                modifier = Modifier,
+                text = score.toString(),
+                color = Color.White
+            )
+        }
+
+        Spacer(modifier = Modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color.Black))
     }
+
 }
 
 @Composable
 fun TouchForMoreInfoArea() {
     // Define your touch for more info area content here
-    Text(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Gray)
-        ,
-        text = "Touch for more info",
-        textAlign = TextAlign.Center
-    )
+            .background(
+                Color.Blue,
+                shape = RoundedCornerShape(bottomEnd = 10.dp, bottomStart = 10.dp)
+            )
+            .padding(5.dp)
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = "View details",
+            textAlign = TextAlign.Center,
+            color = Color.Yellow
+        )
+    }
 }
 
 
