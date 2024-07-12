@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.uefa.bracket.paresantation.BracketLine
+import com.uefa.bracket.paresantation.Constants.BRACKET_WIDTH
+import com.uefa.bracket.paresantation.Constants.SECOND_PAGE_BOTTOM_PADDING
 
 @Composable
 internal fun MatchesRound(
@@ -108,7 +110,7 @@ internal fun MatchItemWithConnection(
             BracketLine(
                 startX = 0f,
                 startY = 2f,
-                endX = size.width + if (isShowBrackets) 75 else 0,
+                endX = size.width + if (isShowBrackets) BRACKET_WIDTH else 0,
                 endY = 2f
             )
         }
@@ -123,18 +125,18 @@ internal fun MatchItemWithConnection(
                     ) {
 
                         val startY = (componentHeight.toPx() / 2) - 5
-                        val endY = (startY * 3) + 12.dp.toPx()
+                        val endY = (startY * 3) + SECOND_PAGE_BOTTOM_PADDING.dp.toPx()
 
                         VerticalConnectionLine(
-                            startX = size.width + 75,
+                            startX = size.width + BRACKET_WIDTH,
                             startY = startY,
                             endY = endY
                         )
 
                         BracketLine(
-                            startX = size.width + 75,
+                            startX = size.width + BRACKET_WIDTH,
                             startY = 28f,
-                            endX = (size.width + 75) + 64.dp.toPx(),
+                            endX = (size.width + BRACKET_WIDTH) + 64.dp.toPx(),
                             endY = 28f
                         )
 
