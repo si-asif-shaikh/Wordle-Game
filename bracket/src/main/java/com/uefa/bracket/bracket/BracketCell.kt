@@ -1,6 +1,7 @@
 package com.uefa.bracket.bracket
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,7 +40,7 @@ fun BracketCell(
     isLastColumn: Boolean
 ) {
     val lineColor = Color.Black
-    val height = 100.dp * (2.0.pow(heightScalingExponent.toDouble())).toFloat()
+    val height by animateDpAsState(targetValue = 100.dp * (2.0.pow(heightScalingExponent.toDouble())).toFloat())
 
     Row(
         modifier = Modifier
