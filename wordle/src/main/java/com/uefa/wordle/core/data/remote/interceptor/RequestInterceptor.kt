@@ -24,7 +24,7 @@ internal class RequestInterceptor(
 
 
         // Add backdoor key
-        builder.addHeader("entity", "ed0t4n$3!")
+        builder.addHeader("entity", "$@nt0rYu")
         return chain.proceed(builder.build())
     }
 

@@ -4,10 +4,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.uefa.wordle.core.business.interactor.InitializeGameUseCase
 import com.uefa.wordle.core.navigation.AppComposeNavigator
-import com.uefa.wordle.utils.BaseViewModel
-import com.uefa.wordle.utils.UiEffect
-import com.uefa.wordle.utils.UiEvent
-import com.uefa.wordle.utils.UiState
+import com.uefa.wordle.core.utils.BaseViewModel
+import com.uefa.wordle.core.utils.UiEffect
+import com.uefa.wordle.core.utils.UiEvent
+import com.uefa.wordle.core.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

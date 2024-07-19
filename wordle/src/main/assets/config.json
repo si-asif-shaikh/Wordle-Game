@@ -1,0 +1,8 @@
+{
+  "baseDomain": "https://stg-gujarat-titans.sportz.io",
+  "endPoints": {
+    "getHintsUrl" : "/wordle/services/api/feeds/gethints?tourGamedayId={tourgamedayid}",
+    "submitWordUrl" : "/wordle/services/api/gameplay/user/{userguid}/submitword",
+    "getSubmittedWord" : "/services/api/gameplay/user/{userguid}/getsubmittedword"
+   }
+}

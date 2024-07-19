@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.uefa.wordle.core.presentation.MainViewModel
-import com.uefa.wordle.presentation.WordleGame
-import com.uefa.wordle.presentation.splash.SplashScreen
+import com.uefa.wordle.wordlegame.presentation.WordleGame
+import com.uefa.wordle.wordlegame.presentation.splash.SplashScreen
 
 @Composable
 internal fun AppNavigation(

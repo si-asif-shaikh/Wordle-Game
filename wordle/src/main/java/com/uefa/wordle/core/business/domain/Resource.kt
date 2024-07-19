@@ -12,6 +12,8 @@ sealed interface Resource<in T : Any> {
 
 sealed class ApiThrowable(override val message: String) : Throwable() {
 
+    data object NullDataError: ApiThrowable("")
+
     data class NetworkError(override val message: String) : ApiThrowable(message)
 
     data class ClientError(val code: Int, override val message: String) : ApiThrowable(message)
