@@ -16,7 +16,7 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
     private val endpointManager: EndpointManager
 ) : WordleNetworkDataSource {
 
-    override suspend fun getWordleHintDetails(tourGameDayId:String): Resource<WordleHintsDetails> {
+    override suspend fun getWordleHintDetails(tourGameDayId:String): Resource<WordleHintsDetails?> {
 
         return safeApiCall {
             val url = endpointManager.getHintsUrl(tourGameDayId)
@@ -34,7 +34,7 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
                         word = it.word.orEmpty(),
                         wordLength = it.wordLength?:0
                     )
-                }?: Resource.Failure(ApiThrowable.NullDataError)
+                }
             }
         }
     }

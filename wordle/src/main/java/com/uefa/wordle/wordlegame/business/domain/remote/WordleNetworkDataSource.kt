@@ -5,6 +5,6 @@ import com.uefa.wordle.wordlegame.business.domain.model.WordleHintsDetails
 
 internal interface WordleNetworkDataSource {
 
-    suspend fun getWordleHintDetails(tourGameDayId:String) : Resource<WordleHintsDetails>
+    suspend fun getWordleHintDetails(tourGameDayId:String) : Resource<WordleHintsDetails?>
 
 }
