@@ -77,6 +77,14 @@ class WordleManager @Inject constructor() {
             currentGuess = ""
         )
     }
+
+    fun resetGame(){
+        _wordleGuessListState.value = _wordleGuessListState.value.copy(
+            guessList = listOf(),
+            keyboardState = keyboardState,
+            currentGuess = ""
+        )
+    }
 }
 
 data class WordleUseResult(
