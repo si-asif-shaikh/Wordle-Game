@@ -1,6 +1,7 @@
 package com.uefa.bracket.paresantation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -33,7 +34,9 @@ internal fun BracketsList(rounds: List<Bracket>) {
 
     Column(
         modifier = Modifier
-            .verticalScroll(rememberScrollState())
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.Center
     ) {
         BoxWithConstraints(
         ) {
