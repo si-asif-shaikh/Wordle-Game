@@ -34,6 +34,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
@@ -62,4 +63,12 @@ dependencies {
     implementation(libs.hilt.navigation)
     ksp(libs.hilt.compiler)
 
+    //Retrofit & Moshi
+    implementation(libs.retrofit)
+    implementation(libs.converter.moshi)
+    implementation(libs.network.logger)
+    implementation(libs.okhttp)
+
+    //DataStore
+    implementation(libs.datastore)
 }

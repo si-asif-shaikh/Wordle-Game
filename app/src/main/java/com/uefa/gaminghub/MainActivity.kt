@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uefa.wordle.theming.Theme
 import com.uefa.gaminghub.ui.theme.GaminghubTheme
+import com.uefa.wordle.CoreGame
+import com.uefa.wordle.core.sdk.Wordle
 import com.uefa.wordle.presentation.WordleGame
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,6 +47,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        Wordle.init(
+            context = applicationContext,
+            environment = Wordle.ENV_STG,
+            versionName = packageManager.getPackageInfo(packageName, 0).versionName,
+        )
+
         setContent {
             GaminghubTheme {
                 // A surface container using the 'background' color from the theme
@@ -77,7 +86,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     if (openWordleGame) {
-                        WordleGame()
+                        CoreGame()
 //                            openWordleGame = false
                     }
 

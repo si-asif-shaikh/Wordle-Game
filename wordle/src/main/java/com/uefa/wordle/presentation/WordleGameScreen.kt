@@ -1,7 +1,5 @@
 package com.uefa.wordle.presentation
 
-import android.app.GameState
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,8 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.uefa.gaminghub.R
+import com.uefa.wordle.core.presentation.Theme
 import com.uefa.wordle.core.presentation.TopAppToolbar
-import com.uefa.wordle.theming.Theme
 
 
 @Composable
@@ -313,6 +311,7 @@ internal fun shouldHighlightBackground(
     return rowIndex < gameState.guesses.size
 }
 
+@Composable
 internal fun getLetterColor(state: WordleGameContract.State, rowIndex: Int, letter: Char): Color {
     return if (shouldHighlightBackground(
             gameState = state,
