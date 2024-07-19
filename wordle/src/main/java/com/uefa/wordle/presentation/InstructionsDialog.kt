@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
-import com.uefa.wordle.theming.Theme
+import com.uefa.wordle.core.presentation.Theme
 
 
 @Composable
