@@ -1,10 +1,10 @@
 package com.uefa.wordle.core.business.domain
 
-sealed interface Resource<in T : Any> {
+sealed class Resource<out T> {
 
-    data class Success<T : Any>(val data: T?) : Resource<T>
+    data class Success<T>(val data: T?) : Resource<T>()
 
-    data class Failure(val throwable: ApiThrowable) : Resource<Any>
+    data class Failure<T>(val throwable: ApiThrowable) : Resource<T>()
 
 
 }
@@ -12,7 +12,7 @@ sealed interface Resource<in T : Any> {
 
 sealed class ApiThrowable(override val message: String) : Throwable() {
 
-    data object NullDataError: ApiThrowable("")
+    data object NullDataError: ApiThrowable("Null Exception")
 
     data class NetworkError(override val message: String) : ApiThrowable(message)
 

@@ -9,7 +9,7 @@ internal class WordleRepository @Inject constructor(
     private val wordleNetworkDataSource: WordleNetworkDataSource
 ) {
 
-    suspend fun getWordleHintsDetails(tourGameDayId:String): Resource<WordleHintsDetails>{
+    suspend fun getWordleHintsDetails(tourGameDayId:String): Resource<WordleHintsDetails?>{
         return wordleNetworkDataSource.getWordleHintDetails(tourGameDayId)
     }
 

@@ -66,9 +66,9 @@ internal suspend fun <T : Any> safeApiCall(apiCall: suspend () -> Resource<T>): 
     }
 }
 
-internal fun <E, D:Any> BaseResponse<E>.toApiResult(
+internal fun <E, D> BaseResponse<E>.toApiResult(
     notCheckRetVal:Boolean = false,
-    mapDataBlock: (E) -> D,
+    mapDataBlock: (E) -> D?,
 ): Resource<D> {
     return if (isRetValOkay() || notCheckRetVal) {
         val mapData = data?.let {
