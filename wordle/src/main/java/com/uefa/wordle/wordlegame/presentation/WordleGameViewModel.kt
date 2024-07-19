@@ -57,11 +57,13 @@ internal class WordleGameViewModel @Inject constructor(
     }
 
     private fun fetchWordleHint() {
+        loader(true)
         viewModelScope.launch {
             val resource = wordleRepository.getWordleHintsDetails(tourGamedayId.orEmpty())
             when (resource) {
                 is Resource.Failure -> {
                     context.showToast(resource.throwable.message)
+                    loader(false)
                 }
 
                 is Resource.Success -> {
@@ -74,6 +76,7 @@ internal class WordleGameViewModel @Inject constructor(
                         }
                         wordleManager.setup(target = it.word)
                         context.showToast(it.word)
+                        loader(false)
                     }
                 }
             }
@@ -91,6 +94,14 @@ internal class WordleGameViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
+
+    private fun loader(value: Boolean){
+        setState {
+            copy(
+                loader = value
+            )
         }
     }
 }
@@ -114,6 +125,7 @@ internal class WordleGameContract {
         val boosterList: List<String> = listOf(
             "Booster", "Booster"
         ),
+        val loader: Boolean = false
     ) : UiState {
 
         val isCheckEnable = currentGuess.length == targetWord.length

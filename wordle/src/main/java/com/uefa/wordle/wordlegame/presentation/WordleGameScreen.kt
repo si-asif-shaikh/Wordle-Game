@@ -41,12 +41,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.uefa.gaminghub.R
+import com.uefa.wordle.core.presentation.LoadingScreen
 import com.uefa.wordle.core.presentation.Theme
 import com.uefa.wordle.core.presentation.TopAppToolbar
 
 
 @Composable
-fun WordleGame(){
+fun WordleGame() {
     WordleGameScreenRoot()
 }
 
@@ -107,13 +108,18 @@ private fun WordleGameScreen(
             InstructionsDialog(onDismiss = { showInstructions = false })
         }
 
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
                 .background(Theme.colors.elevation.background)
         ) {
-            GuessBoard(state)
+            if (state.loader) {
+                LoadingScreen()
+            } else {
+                GuessBoard(state)
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
