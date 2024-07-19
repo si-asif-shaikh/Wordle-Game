@@ -40,7 +40,7 @@ import com.uefa.wordle.theming.Theme
 import com.uefa.gaminghub.ui.theme.GaminghubTheme
 import com.uefa.wordle.CoreGame
 import com.uefa.wordle.core.sdk.Wordle
-import com.uefa.wordle.presentation.WordleGame
+import com.uefa.wordle.wordlegame.presentation.WordleGame
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

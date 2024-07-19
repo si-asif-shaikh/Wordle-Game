@@ -65,9 +65,14 @@ dependencies {
 
     //Retrofit & Moshi
     implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
     implementation(libs.network.logger)
     implementation(libs.okhttp)
+
+    implementation(libs.converter.moshi)
+
+    implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
+    ksp(libs.moshi.kotlin.codegen)
 
     //DataStore
     implementation(libs.datastore)

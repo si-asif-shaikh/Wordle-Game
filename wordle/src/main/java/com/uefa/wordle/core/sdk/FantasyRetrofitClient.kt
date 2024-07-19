@@ -4,8 +4,9 @@ import android.content.Context
 import com.si.corefantasy.data.remote.interceptor.CurlLoggingInterceptor
 import com.squareup.moshi.Moshi
 import com.uefa.gaminghub.BuildConfig
-import com.uefa.wordle.core.data.remote.service.WordleApiService
+import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.di.NetworkModuleEntryPoint
+import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
 import dagger.hilt.android.EntryPointAccessors
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -45,6 +46,11 @@ internal class FantasyRetrofitClient {
                 .client(httpClient.build())
                 .addConverterFactory(MoshiConverterFactory.create(moshi))
                 .build()
+        }
+
+        val feedApiService: FeedApiService by lazy {
+            check(Companion::retrofit.isInitialized) { "Retrofit client is not initialized" }
+            retrofit.create(FeedApiService::class.java)
         }
 
         val wordleApiService: WordleApiService by lazy {

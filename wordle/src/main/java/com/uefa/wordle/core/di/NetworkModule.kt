@@ -5,8 +5,9 @@ import com.uefa.wordle.core.business.domain.prefs.PreferenceManager
 import com.uefa.wordle.core.business.domain.remote.utils.EndpointManager
 import com.uefa.wordle.core.business.domain.remote.utils.EndpointManagerImpl
 import com.uefa.wordle.core.data.remote.interceptor.RequestInterceptor
-import com.uefa.wordle.core.data.remote.service.WordleApiService
+import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.sdk.FantasyRetrofitClient
+import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.EntryPoint
@@ -31,7 +32,13 @@ internal object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideFantasyApiService(): WordleApiService {
+    fun provideFeedApiService(): FeedApiService {
+        return FantasyRetrofitClient.feedApiService
+    }
+
+    @Singleton
+    @Provides
+    fun provideWordleApiService(): WordleApiService{
         return FantasyRetrofitClient.wordleApiService
     }
 

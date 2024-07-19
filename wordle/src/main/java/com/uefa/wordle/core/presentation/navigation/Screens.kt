@@ -23,7 +23,7 @@ internal sealed class Screens(
 
         fun createRoute(tourGamedayId: Int): String {
             return name.replace(
-                "tourGamedayId", tourGamedayId.toString()
+                "{tourGamedayId}", tourGamedayId.toString()
             )
         }
     }

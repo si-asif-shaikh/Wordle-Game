@@ -4,6 +4,7 @@ import android.content.Context
 import com.uefa.wordle.core.business.domain.model.Config
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 internal class Store {
 
@@ -30,5 +31,9 @@ internal class Store {
         val currentTranslation: Map<String, String>
             get() = _translation.value.orEmpty()
 
+
+        fun saveGameConfigInMemory(config: Config) {
+            _config.value = config
+        }
     }
 }
