@@ -57,12 +57,12 @@ internal class EndpointManagerImpl @Inject constructor() : EndpointManager {
     }
 
     override fun getSubmittedWord(): String {
-        return getBaseUrl() + config?.submitWordUrl
-            ?.replace("{userguid}","")
+        return getBaseUrl() + config?.getSubmittedWord
+            ?.replace("{userguid}","48f794a0-3a0f-11ef-a376-0e3f2a47a899")
     }
 
     override fun submitWordUrl(): String {
-        return getBaseUrl() + config?.getSubmittedWord
-            ?.replace("{userguid}","")
+        return getBaseUrl() + config?.submitWordUrl
+            ?.replace("{userguid}","48f794a0-3a0f-11ef-a376-0e3f2a47a899")
     }
 }

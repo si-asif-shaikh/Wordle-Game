@@ -9,6 +9,7 @@ import com.uefa.wordle.core.utils.BaseViewModel
 import com.uefa.wordle.core.utils.UiEffect
 import com.uefa.wordle.core.utils.UiEvent
 import com.uefa.wordle.core.utils.UiState
+import com.uefa.wordle.wordlegame.business.domain.remote.model.request.SubmitWordRequest
 import com.uefa.wordle.wordlegame.business.repo.WordleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,7 +38,8 @@ internal class WordleGameViewModel @Inject constructor(
         when (event) {
             WordleGameContract.Event.CheckGuess -> {
                 if (uiState.isCheckEnable) {
-                    wordleManager.checkGuess()
+//                    wordleManager.checkGuess()
+                    submitWord()
                 }
             }
 
@@ -101,6 +103,23 @@ internal class WordleGameViewModel @Inject constructor(
         setState {
             copy(
                 loader = value
+            )
+        }
+    }
+
+    private fun submitWord(){
+        viewModelScope.launch {
+            wordleRepository.submitWord(
+                submitWordRequest = SubmitWordRequest(
+                    attemptNo = 1,
+                    langCode = "en",
+                    platformId = 3,
+                    tourGamedayId = tourGamedayId?.toIntOrNull()?:0,
+                    tourId = 1,
+                    userHint = 1,
+                    userID = 0,
+                    userWord = uiState.currentGuess
+                )
             )
         }
     }
