@@ -1,6 +1,5 @@
 package com.uefa.wordle.wordlegame.data.remote.service
 
-import com.uefa.wordle.core.data.remote.model.ApiResponse
 import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.BaseResponse
 import com.uefa.wordle.wordlegame.data.remote.model.SubmitWordResponseE
