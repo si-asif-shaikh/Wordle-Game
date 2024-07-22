@@ -32,16 +32,21 @@ internal class FantasyRetrofitClient {
                 NetworkModuleEntryPoint::class.java
             ).getRequestInterceptor()
 
+            val responseInterceptor = EntryPointAccessors.fromApplication(
+                context,
+                NetworkModuleEntryPoint::class.java
+            ).getResponseInterceptor()
 
 
             httpClient.addInterceptor(requestInterceptor)
+            httpClient.addInterceptor(responseInterceptor)
 
             if(BuildConfig.DEBUG) {
                 httpClient.addInterceptor(loggingInterceptor)
                 httpClient.addInterceptor(CurlLoggingInterceptor("coregaming:curl:"))
             }
             val moshi = Moshi.Builder()
-                .add(ApiResponseAdapterFactory())
+//                .add(ApiResponseAdapterFactory())
                 .build()
 
             retrofit = Retrofit.Builder()

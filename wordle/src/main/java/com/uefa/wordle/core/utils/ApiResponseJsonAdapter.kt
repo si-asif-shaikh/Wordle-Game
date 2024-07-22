@@ -31,32 +31,39 @@ internal class ApiResponseJsonAdapter<T>(
         while (reader.hasNext()) {
             when (reader.nextName()) {
                 "Data" -> {
-                    reader.beginObject()
-                    when (reader.nextName()) {
-                        "Value" -> {
-                            when (reader.peek()) {
-                                JsonReader.Token.BEGIN_OBJECT -> {
-                                    data = delegate.fromJson(reader.readJsonValue().toString())
-                                }
+                    val peek = reader.peekJson()
+                    peek.beginObject()
+                    while (peek.hasNext()) {
+                        when (peek.nextName()) {
+                            "Value" -> {
+                                when (peek.peek()) {
+                                    JsonReader.Token.BEGIN_OBJECT -> {
+//                                        Log.d(TAG,"Response : ${reader.readJsonValue().toString()}")
+                                        data = delegate.fromJson(reader)
+                                    }
 
-                                JsonReader.Token.NUMBER -> {
+                                    JsonReader.Token.NUMBER -> {
+                                        Log.d(TAG,"Error")
+                                    }
 
-                                }
-
-                                else -> {
-                                    Log.d(
-                                        TAG,
-                                        "Expected BEGIN_OBJECT or NUMBER but was ${reader.peek()} at path ${reader.path}"
-                                    )
+                                    else -> {
+                                        Log.d(
+                                            TAG,
+                                            "Expected BEGIN_OBJECT or NUMBER but was ${reader.peek()} at path ${reader.path}"
+                                        )
+                                    }
                                 }
                             }
                         }
                     }
-                    reader.endObject()
+                    peek.endObject()
+
+//                    data = delegate.fromJson(reader)
+
                 }
 
                 "Meta" -> {
-                    Log.d(TAG, "Meta : $reader")
+//                    Log.d(TAG, "Meta : $reader")
                     meta = moshi.adapter(Meta::class.java).fromJson(reader)
                 }
 
