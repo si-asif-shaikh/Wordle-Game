@@ -22,13 +22,6 @@ internal data class BaseResponse<T>(
     val meta: Meta,
 )
 
-@JsonClass(generateAdapter = true)
-internal data class ApiResponse<T>(
-    @Json(name = "Data")
-    val data: Data<T>?,
-    @Json(name = "Meta")
-    val meta: Meta?
-)
 
 @JsonClass(generateAdapter = true)
 internal data class BaseDataResponse<T>(
@@ -74,18 +67,3 @@ internal fun BaseResponse<*>.isRetValOkay(): Boolean {
 internal fun BaseDataResponse<*>.isRetValOkay(): Boolean {
     return meta.retVal == 1
 }
-
-
-internal sealed class ResponseData<T> {
-    data class Success<T>(val value: GenericSuccessData<T>) : ResponseData<T>()
-    data class Error<T>(val value: ErrorData) : ResponseData<T>()
-}
-
-data class GenericSuccessData<T>(
-    val value: T,
-//    val feedTime: FeedTime
-)
-
-data class ErrorData(
-    val value: Int
-)

@@ -110,7 +110,7 @@ internal class WordleGameViewModel @Inject constructor(
 
     private fun submitWord(){
         viewModelScope.launch {
-            wordleRepository.submitWord(
+          val resource =  wordleRepository.submitWord(
                 submitWordRequest = SubmitWordRequest(
                     attemptNo = 1,
                     langCode = "en",
@@ -122,6 +122,15 @@ internal class WordleGameViewModel @Inject constructor(
                     userWord = uiState.currentGuess
                 )
             )
+
+            when(resource){
+                is Resource.Failure -> {
+                    context.showToast(resource.throwable.message)
+                }
+                is Resource.Success -> {
+
+                }
+            }
         }
     }
 }

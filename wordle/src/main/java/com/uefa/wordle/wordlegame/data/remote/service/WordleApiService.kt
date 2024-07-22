@@ -23,10 +23,10 @@ internal interface WordleApiService {
     suspend fun submitWord(
         @Url url: String,
         @Body body: SubmitWordRequestE
-    ) : ApiResponse<SubmitWordResponseE?>
+    ) : BaseDataResponse<SubmitWordResponseE?>
 
     @GET
     suspend fun getSubmittedWord(
         @Url url: String
-    ) : ApiResponse<SubmitWordResponseE?>
+    ) : BaseDataResponse<SubmitWordResponseE?>
 }
