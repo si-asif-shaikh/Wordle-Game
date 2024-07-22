@@ -19,9 +19,9 @@ interface EndpointManager {
 
     fun getHintsUrl(tourGameDayId:String): String
 
-    fun getSubmittedWord(): String
-
     fun submitWordUrl(): String
+
+    fun getSubmittedWord(): String
 
 }
 
@@ -31,6 +31,9 @@ internal class EndpointManagerImpl @Inject constructor() : EndpointManager {
 
         val BASE_URL: String
             get() = FantasyRetrofitClient.getBaseUrl()
+
+        val userId: String
+            get() = "a-c59f-11ee-9dd4-0a2e0486673f"
 
     }
 
@@ -56,13 +59,14 @@ internal class EndpointManagerImpl @Inject constructor() : EndpointManager {
             ?.replace("{tourgamedayid}",tourGameDayId)
     }
 
-    override fun getSubmittedWord(): String {
-        return getBaseUrl() + config?.getSubmittedWord
-            ?.replace("{userguid}","48f794a0-3a0f-11ef-a376-0e3f2a47a899")
-    }
-
     override fun submitWordUrl(): String {
         return getBaseUrl() + config?.submitWordUrl
-            ?.replace("{userguid}","48f794a0-3a0f-11ef-a376-0e3f2a47a899")
+            ?.replace("{userguid}",userId)
+    }
+
+
+    override fun getSubmittedWord(): String {
+        return getBaseUrl() + config?.getSubmittedWord
+            ?.replace("{userguid}",userId)
     }
 }

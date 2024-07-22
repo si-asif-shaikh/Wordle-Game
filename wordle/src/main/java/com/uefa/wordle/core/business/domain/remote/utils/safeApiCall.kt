@@ -3,6 +3,7 @@ package com.uefa.wordle.core.business.domain.remote.utils
 
 import com.uefa.wordle.core.business.domain.ApiThrowable
 import com.uefa.wordle.core.business.domain.Resource
+import com.uefa.wordle.core.data.remote.model.ApiResponse
 import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.BaseResponse
 import com.uefa.wordle.core.data.remote.model.isRetValOkay
@@ -100,5 +101,29 @@ internal fun <E, D> BaseDataResponse<E>.toApiResult(
         }
     } else {
         Resource.Failure(ApiThrowable.ServerError(meta.retVal, meta.message.orEmpty()))
+    }
+}
+
+internal fun <E, D> ApiResponse<E>.toApiResult(
+    mapDataBlock: (E) -> D?,
+): Resource<D> {
+    return if(meta?.success == true) {
+
+        val mapData = data?.value?.let {
+            mapDataBlock(it)
+        }
+        if (mapData != null) {
+            Resource.Success(mapData)
+        } else {
+            Resource.Failure(ApiThrowable.NullDataError)
+        }
+
+    } else{
+
+        // Handle the error case
+        val errorCode = meta?.retVal?:0
+        val errorMessage = meta?.message
+
+        Resource.Failure(ApiThrowable.ClientError(errorCode,errorMessage.orEmpty()))
     }
 }

@@ -11,4 +11,5 @@ internal interface WordleNetworkDataSource {
 
     suspend fun submitWord(submitWordRequest: SubmitWordRequest) : Resource<SubmitWordResponse?>
 
+    suspend fun getSubmittedWord() : Resource<SubmitWordResponse?>
 }

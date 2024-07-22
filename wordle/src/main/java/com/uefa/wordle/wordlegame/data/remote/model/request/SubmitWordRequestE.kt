@@ -13,7 +13,7 @@ data class SubmitWordRequestE(
     @Json(name = "platformId")
     val platformId: Int?,
     @Json(name = "tourGamedayId")
-    val tourGamedayId: Int?,
+    val tourGamedayId: String?,
     @Json(name = "tourId")
     val tourId: Int?,
     @Json(name = "userHint")

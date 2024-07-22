@@ -129,7 +129,7 @@ private fun WordleGameScreen(
                 GridKeyboard(
                     keyboardState = state.keyboardState,
                     onKeyPress = { letter ->
-                        if (state.currentGuess.length < state.targetWord.length) {
+                        if (state.currentGuess.length < state.wordLength) {
                             onAction(WordleGameContract.Event.OnLetterEnter(letter))
                         }
                     },
@@ -229,7 +229,7 @@ internal fun GuessBoard(state: WordleGameContract.State) {
 
         (0 until 5).forEach { rowIndex ->
             Row {
-                (0 until state.targetWord.length).forEach { colIndex ->
+                (0 until state.wordLength).forEach { colIndex ->
                     val letter = getCurrentGridLetter(
                         gameState = state,
                         rowIndex = rowIndex,

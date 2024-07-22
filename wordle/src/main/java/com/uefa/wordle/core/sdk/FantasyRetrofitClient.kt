@@ -6,6 +6,7 @@ import com.squareup.moshi.Moshi
 import com.uefa.gaminghub.BuildConfig
 import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.di.NetworkModuleEntryPoint
+import com.uefa.wordle.core.utils.ApiResponseAdapterFactory
 import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
 import dagger.hilt.android.EntryPointAccessors
 import okhttp3.OkHttpClient
@@ -39,7 +40,9 @@ internal class FantasyRetrofitClient {
                 httpClient.addInterceptor(loggingInterceptor)
                 httpClient.addInterceptor(CurlLoggingInterceptor("coregaming:curl:"))
             }
-            val moshi = Moshi.Builder().build()
+            val moshi = Moshi.Builder()
+                .add(ApiResponseAdapterFactory())
+                .build()
 
             retrofit = Retrofit.Builder()
                 .baseUrl(getBaseUrl())
@@ -61,9 +64,9 @@ internal class FantasyRetrofitClient {
 
         fun getBaseUrl(): String {
             return when (FantasyConstant.getEnvironment()) {
-                Wordle.ENV_STG -> "https://stg-gujarat-titans.sportz.io"
-                Wordle.ENV_PROD -> "https://prod-gujarat-titans.sportz.io"
-                else -> "https://stg-gujarat-titans.sportz.io"
+                Wordle.ENV_STG -> "https://www.gujarattitansipl.com"
+                Wordle.ENV_PROD -> "https://www.gujarattitansipl.com"
+                else -> "https://www.gujarattitansipl.com"
             }
         }
 

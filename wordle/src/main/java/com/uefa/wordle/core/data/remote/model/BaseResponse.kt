@@ -7,6 +7,7 @@ import com.squareup.moshi.JsonClass
  * Response data class is used in BusterInterceptor for parsing response and getting retVal.
  * It is not to be used for as response type for any Retrofit API service method.
  */
+
 @JsonClass(generateAdapter = true)
 internal data class BaseResponseTypeMeta(
     @Json(name = "Meta")
@@ -22,9 +23,17 @@ internal data class BaseResponse<T>(
 )
 
 @JsonClass(generateAdapter = true)
-internal data class BaseDataResponse<T>(
+internal data class ApiResponse<T>(
     @Json(name = "Data")
     val data: Data<T>?,
+    @Json(name = "Meta")
+    val meta: Meta?
+)
+
+@JsonClass(generateAdapter = true)
+internal data class BaseDataResponse<T>(
+    @Json(name = "Data")
+    val data: Data<T?>?,
     @Json(name = "Meta")
     val meta: Meta,
 )
@@ -65,3 +74,18 @@ internal fun BaseResponse<*>.isRetValOkay(): Boolean {
 internal fun BaseDataResponse<*>.isRetValOkay(): Boolean {
     return meta.retVal == 1
 }
+
+
+internal sealed class ResponseData<T> {
+    data class Success<T>(val value: GenericSuccessData<T>) : ResponseData<T>()
+    data class Error<T>(val value: ErrorData) : ResponseData<T>()
+}
+
+data class GenericSuccessData<T>(
+    val value: T,
+//    val feedTime: FeedTime
+)
+
+data class ErrorData(
+    val value: Int
+)

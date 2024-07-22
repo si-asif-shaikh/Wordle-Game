@@ -19,4 +19,8 @@ internal class WordleRepository @Inject constructor(
         return wordleNetworkDataSource.submitWord(submitWordRequest = submitWordRequest)
     }
 
+    suspend fun getSubmittedWord(): Resource<SubmitWordResponse?>{
+        return wordleNetworkDataSource.getSubmittedWord()
+    }
+
 }

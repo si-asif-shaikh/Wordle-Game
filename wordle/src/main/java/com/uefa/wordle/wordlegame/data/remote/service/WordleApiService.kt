@@ -1,5 +1,6 @@
 package com.uefa.wordle.wordlegame.data.remote.service
 
+import com.uefa.wordle.core.data.remote.model.ApiResponse
 import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.BaseResponse
 import com.uefa.wordle.wordlegame.data.remote.model.SubmitWordResponseE
@@ -16,11 +17,16 @@ internal interface WordleApiService {
     @GET
     suspend fun getHints(
         @Url url: String
-    ) : BaseResponse<List<WordleHintsDetailsE>>
+    ) : BaseResponse<List<WordleHintsDetailsE>?>
 
     @POST
     suspend fun submitWord(
         @Url url: String,
         @Body body: SubmitWordRequestE
-    ) : BaseDataResponse<SubmitWordResponseE>
+    ) : ApiResponse<SubmitWordResponseE?>
+
+    @GET
+    suspend fun getSubmittedWord(
+        @Url url: String
+    ) : ApiResponse<SubmitWordResponseE?>
 }
