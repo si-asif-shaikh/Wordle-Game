@@ -9,21 +9,21 @@ import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.ToJson
 import com.squareup.moshi.Types
-import com.uefa.wordle.core.data.remote.model.ApiResponse
+import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.Data
 import com.uefa.wordle.core.data.remote.model.Meta
 import com.uefa.wordle.wordlegame.data.remote.model.SubmitWordResponseE
 import java.lang.reflect.Type
 
-internal class ApiResponseJsonAdapter<T>(
+internal class BaseDataResponseJsonAdapter<T>(
     private val delegate: JsonAdapter<Data<T>>,
     private val moshi: Moshi
-) : JsonAdapter<ApiResponse<T>>() {
+) : JsonAdapter<BaseDataResponse<T>>() {
 
-    val TAG = "ApiResponseJsonAdapter"
+    val TAG = "BaseDataResponseJsonAdapter"
 
     @FromJson
-    override fun fromJson(reader: JsonReader): ApiResponse<T>? {
+    override fun fromJson(reader: JsonReader): BaseDataResponse<T>? {
         var data: Data<T>? = null
         var meta: Meta? = null
 
@@ -76,30 +76,30 @@ internal class ApiResponseJsonAdapter<T>(
             throw JsonDataException("Expected Data and Meta but were missing at path ${reader.path}")
         }
 
-        return ApiResponse(data, meta)
+        return BaseDataResponse(data, meta)
     }
 
     @ToJson
-    override fun toJson(writer: JsonWriter, value: ApiResponse<T>?) {
-        throw UnsupportedOperationException("ApiResponseJsonAdapter is only used to deserialize objects.")
+    override fun toJson(writer: JsonWriter, value: BaseDataResponse<T>?) {
+        throw UnsupportedOperationException("BaseDataResponseJsonAdapter is only used to deserialize objects.")
     }
 }
 
-class ApiResponseAdapterFactory : JsonAdapter.Factory {
+class BaseDataResponseAdapterFactory : JsonAdapter.Factory {
     override fun create(
         type: Type,
         annotations: MutableSet<out Annotation>,
         moshi: Moshi
     ): JsonAdapter<*>? {
-        if (Types.getRawType(type) != ApiResponse::class.java) {
+        if (Types.getRawType(type) != BaseDataResponse::class.java) {
             return null
         }
 
         val parameterizedType =
-            Types.newParameterizedType(ApiResponse::class.java, Types.getRawType(type))
+            Types.newParameterizedType(BaseDataResponse::class.java, Types.getRawType(type))
         val dataType = Types.newParameterizedType(Data::class.java, SubmitWordResponseE::class.java)
         val delegate = moshi.adapter<Data<Any?>>(dataType)
 
-        return ApiResponseJsonAdapter(delegate, moshi = moshi)
+        return BaseDataResponseJsonAdapter(delegate, moshi = moshi)
     }
 }
