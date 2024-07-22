@@ -6,7 +6,6 @@ import com.squareup.moshi.Moshi
 import com.uefa.gaminghub.BuildConfig
 import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.di.NetworkModuleEntryPoint
-import com.uefa.wordle.core.utils.ApiResponseAdapterFactory
 import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
 import dagger.hilt.android.EntryPointAccessors
 import okhttp3.OkHttpClient
