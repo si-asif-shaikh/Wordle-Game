@@ -28,7 +28,7 @@ internal class WordleGameViewModel @Inject constructor(
     savedStateHandle
 ) {
 
-    private val tourGamedayId = savedStateHandle.get<String>("tourGamedayId")
+//    private val tourGamedayId = savedStateHandle.get<String>("tourGamedayId")
 
     override fun createInitialState(): WordleGameContract.State {
         return WordleGameContract.State()
@@ -55,13 +55,13 @@ internal class WordleGameViewModel @Inject constructor(
 
     init {
         observeWordleList()
-        fetchWordleHint()
+        fetchWordleGameDetails()
     }
 
-    private fun fetchWordleHint() {
+    private fun fetchWordleGameDetails() {
         loader(true)
         viewModelScope.launch {
-            val resource = wordleRepository.getWordleHintsDetails(tourGamedayId.orEmpty())
+            val resource = wordleRepository.getSubmittedWord()
             when (resource) {
                 is Resource.Failure -> {
                     context.showToast(resource.throwable.message)
@@ -73,11 +73,12 @@ internal class WordleGameViewModel @Inject constructor(
                     data?.let {
                         setState {
                             copy(
-                                targetWord = it.word
+                                wordLength = it.wordLength,
+                                gdId = it.gdId
                             )
                         }
-                        wordleManager.setup(target = it.word)
-                        context.showToast(it.word)
+//                        wordleManager.setup(target = it.word)
+                        context.showToast(it.wordLength.toString())
                         loader(false)
                     }
                 }
@@ -114,7 +115,7 @@ internal class WordleGameViewModel @Inject constructor(
                     attemptNo = 1,
                     langCode = "en",
                     platformId = 3,
-                    tourGamedayId = tourGamedayId?.toIntOrNull()?:0,
+                    tourGamedayId = uiState.gdId,
                     tourId = 1,
                     userHint = 1,
                     userID = 0,
@@ -137,8 +138,9 @@ internal class WordleGameContract {
 
     @Parcelize
     data class State(
+        val gdId: String = "",
         val currentGuess: String = "",
-        val targetWord: String = "",
+        val wordLength: Int = 0,
         val guesses: List<String> = listOf(),
         val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED },
         val boosterList: List<String> = listOf(
@@ -147,7 +149,7 @@ internal class WordleGameContract {
         val loader: Boolean = false
     ) : UiState {
 
-        val isCheckEnable = currentGuess.length == targetWord.length
+        val isCheckEnable = currentGuess.length == wordLength
     }
 
     sealed class Effect() : UiEffect {}

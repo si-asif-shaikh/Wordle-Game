@@ -27,7 +27,7 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
             )
 
             response.toApiResult {
-                val data = it.firstOrNull()
+                val data = it?.firstOrNull()
                 data?.let {
                     WordleHintsDetails(
                         finalHint = it.finalHint.orEmpty(),
@@ -51,10 +51,38 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
 
             response.toApiResult {
                 val data = it
-                data.run {
+                data?.run {
                     SubmitWordResponse(
                         attemptNo = attemptNo?:0,
-                        gdId = gdId?:0,
+                        gdId = gdId.orEmpty(),
+                        gtFlag = gtFlag?:0,
+                        isHintuse = isHintuse?:0,
+                        mastWord = mastWord.orEmpty(),
+                        userAttemptNo = userAttemptNo?:0,
+                        userPoint = userPoint?:0,
+                        userSubmitflag = userSubmitflag?: listOf(),
+                        userWord = userWord.orEmpty(),
+                        wordLength = wordLength?:0
+                    )
+                }
+            }
+        }
+    }
+
+    override suspend fun getSubmittedWord(): Resource<SubmitWordResponse> {
+        return safeApiCall {
+            val url = endpointManager.getSubmittedWord()
+
+            val response = wordleApiService.getSubmittedWord(
+                url = url
+            )
+
+            response.toApiResult {
+                val data = it
+                data?.run {
+                    SubmitWordResponse(
+                        attemptNo = attemptNo?:0,
+                        gdId = gdId.orEmpty(),
                         gtFlag = gtFlag?:0,
                         isHintuse = isHintuse?:0,
                         mastWord = mastWord.orEmpty(),

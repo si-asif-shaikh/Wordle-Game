@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 
 data class SubmitWordResponse(
     val attemptNo: Int,
-    val gdId: Int,
+    val gdId: String,
     val gtFlag: Int,
     val isHintuse: Int,
     val mastWord: String?,

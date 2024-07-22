@@ -9,7 +9,7 @@ data class SubmitWordResponseE(
     @Json(name = "attemptNo")
     val attemptNo: Int?,
     @Json(name = "gdId")
-    val gdId: Int?,
+    val gdId: String?,
     @Json(name = "gtFlag")
     val gtFlag: Int?,
     @Json(name = "isHintuse")

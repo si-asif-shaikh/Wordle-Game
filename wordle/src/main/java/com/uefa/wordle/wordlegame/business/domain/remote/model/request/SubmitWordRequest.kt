@@ -7,7 +7,7 @@ data class SubmitWordRequest(
     val attemptNo: Int,
     val langCode: String,
     val platformId: Int,
-    val tourGamedayId: Int,
+    val tourGamedayId: String,
     val tourId: Int,
     val userHint: Int,
     val userID: Int,
