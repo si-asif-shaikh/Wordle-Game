@@ -26,7 +26,7 @@ internal data class BaseResponse<T>(
 @JsonClass(generateAdapter = true)
 internal data class BaseDataResponse<T>(
     @Json(name = "Data")
-    val data: Data<T?>?,
+    val data: Data<T>?,
     @Json(name = "Meta")
     val meta: Meta,
 )
