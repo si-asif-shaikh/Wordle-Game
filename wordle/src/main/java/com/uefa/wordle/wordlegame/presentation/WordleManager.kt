@@ -85,6 +85,32 @@ class WordleManager @Inject constructor() {
             currentGuess = ""
         )
     }
+
+    fun highlightSubmittedWord(userSubmitflag: List<Int>) {
+        val newGuesses = currentWordleGuessList + currentGuess
+        val newKeyboardState = _wordleGuessListState.value.keyboardState.toMutableMap()
+
+        userSubmitflag.forEachIndexed{ index, state ->
+            val letter = targetWord[index]
+            when(state){
+                WordState.WRONG_WORD.state -> {
+                    newKeyboardState[letter] = LetterStatus.ABSENT
+                }
+                WordState.WORD_PRESENT.state -> {
+                    newKeyboardState[letter] = LetterStatus.CORRECT
+                }
+                WordState.CORRECT_PLACE.state -> {
+                    newKeyboardState[letter] = LetterStatus.PRESENT
+                }
+            }
+        }
+
+        _wordleGuessListState.value = _wordleGuessListState.value.copy(
+            guessList = newGuesses,
+            keyboardState = newKeyboardState,
+            currentGuess = ""
+        )
+    }
 }
 
 data class WordleUseResult(
@@ -95,4 +121,8 @@ data class WordleUseResult(
 
 enum class LetterStatus {
     UNUSED, CORRECT, PRESENT, ABSENT
+}
+
+enum class WordState(val state:Int){
+    WRONG_WORD(0),WORD_PRESENT(1),CORRECT_PLACE(2)
 }

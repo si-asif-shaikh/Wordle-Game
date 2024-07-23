@@ -25,5 +25,22 @@ data class SubmitWordResponseE(
     @Json(name = "userWord")
     val userWord: String?,
     @Json(name = "wordLength")
-    val wordLength: Int?
+    val wordLength: Int?,
+
+    @Json(name = "attemptno")
+    val attemptno: Int?,
+    @Json(name = "gdid")
+    val gdid: String?,
+    @Json(name = "ishintuse")
+    val ishintuse: Int?,
+    @Json(name = "mastword")
+    val mastword: String?,
+    @Json(name = "userpoint")
+    val userpoint: Int?,
+    @Json(name = "usersubmitflag")
+    val usersubmitflag: List<Int>?,
+    @Json(name = "userword")
+    val userword: String?,
+    @Json(name = "wordlength")
+    val wordlength: Int?
 )
