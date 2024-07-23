@@ -1,7 +1,7 @@
 package com.uefa.wordle.core.sdk
 
 import android.content.Context
-import com.si.corefantasy.data.remote.interceptor.CurlLoggingInterceptor
+import com.uefa.wordle.core.data.remote.interceptor.CurlLoggingInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.uefa.gaminghub.BuildConfig
@@ -39,8 +39,21 @@ internal class FantasyRetrofitClient {
             ).getResponseInterceptor()
 
 
+            val busterInterceptor = EntryPointAccessors.fromApplication(
+                context,
+                NetworkModuleEntryPoint::class.java
+            ).getBusterInterceptor()
+
+            val cookieInterceptor = EntryPointAccessors.fromApplication(
+                context,
+                NetworkModuleEntryPoint::class.java
+            ).getCookieInterceptor()
+
+
             httpClient.addInterceptor(requestInterceptor)
-            httpClient.addInterceptor(responseInterceptor)
+            httpClient.addInterceptor(busterInterceptor)
+            httpClient.addInterceptor(cookieInterceptor)
+//            httpClient.addInterceptor(responseInterceptor)
 
             if(BuildConfig.DEBUG) {
                 httpClient.addInterceptor(loggingInterceptor)
@@ -71,10 +84,10 @@ internal class FantasyRetrofitClient {
 
 
         fun getBaseUrl(): String {
-            return when (FantasyConstant.getEnvironment()) {
-                Wordle.ENV_STG -> "https://www.gujarattitansipl.com"
+            return when (WordleConstant.getEnvironment()) {
+                Wordle.ENV_STG -> "https://stg-gujarat-titans.sportz.io"
                 Wordle.ENV_PROD -> "https://www.gujarattitansipl.com"
-                else -> "https://www.gujarattitansipl.com"
+                else -> "https://stg-gujarat-titans.sportz.io"
             }
         }
 

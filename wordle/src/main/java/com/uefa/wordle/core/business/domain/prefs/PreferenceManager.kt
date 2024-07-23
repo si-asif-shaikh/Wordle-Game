@@ -4,5 +4,11 @@ import kotlinx.coroutines.flow.Flow
 
 internal interface PreferenceManager {
 
-    fun getFantasyToken(): Flow<String?>
+    suspend fun setWordleToken(token: String)
+
+    fun getWordleToken(): Flow<String?>
+
+    suspend fun setUserGuId(userGuId: String)
+
+    fun getUserGuId(): Flow<String?>
 }

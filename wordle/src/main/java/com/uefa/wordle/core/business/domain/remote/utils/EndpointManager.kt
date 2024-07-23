@@ -17,6 +17,8 @@ interface EndpointManager {
 
     fun getTranslationsUrl(lang: String): String
 
+    fun getLoginUrl(): String
+
     fun getHintsUrl(tourGameDayId:String): String
 
     fun submitWordUrl(): String
@@ -33,7 +35,7 @@ internal class EndpointManagerImpl @Inject constructor() : EndpointManager {
             get() = FantasyRetrofitClient.getBaseUrl()
 
         val userId: String
-            get() = "a-c59f-11ee-9dd4-0a2e0486673f"
+            get() = "9808c67a-4902-11ef-aecf-0e3f2a47a899"
 
     }
 
@@ -52,6 +54,11 @@ internal class EndpointManagerImpl @Inject constructor() : EndpointManager {
     override fun getTranslationsUrl(lang: String): String {
 //        return getBaseUrl() + config?.translationEndpointPath?.replace(KEY_LANGUAGE, lang).orEmpty()
         return ""
+    }
+
+    override fun getLoginUrl(): String {
+        return getBaseUrl() + config?.loginUrl
+            ?.replace("{wafguid}","4CF4EF7C19CB3B8D230413D1841DA9B67CB72F47")
     }
 
     override fun getHintsUrl(tourGameDayId: String): String {

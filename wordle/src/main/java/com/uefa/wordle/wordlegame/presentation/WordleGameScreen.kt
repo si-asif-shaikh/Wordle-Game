@@ -227,7 +227,7 @@ internal fun GuessBoard(state: WordleGameContract.State) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        (0 until 5).forEach { rowIndex ->
+        (0 until state.totalAttempt).forEach { rowIndex ->
             Row {
                 (0 until state.wordLength).forEach { colIndex ->
                     val letter = getCurrentGridLetter(

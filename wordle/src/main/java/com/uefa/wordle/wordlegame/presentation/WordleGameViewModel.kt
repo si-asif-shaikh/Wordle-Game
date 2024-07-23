@@ -4,7 +4,10 @@ import android.content.Context
 import android.widget.Toast
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import com.uefa.wordle.core.business.Store
 import com.uefa.wordle.core.business.domain.Resource
+import com.uefa.wordle.core.data.remote.buster.BusterData
+import com.uefa.wordle.core.data.remote.buster.GetEndpointPath
 import com.uefa.wordle.core.utils.BaseViewModel
 import com.uefa.wordle.core.utils.UiEffect
 import com.uefa.wordle.core.utils.UiEvent
@@ -55,6 +58,12 @@ internal class WordleGameViewModel @Inject constructor(
     }
 
     init {
+        setState {
+            copy(
+                totalAttempt = Store.currentConfig?.totalGameAttempt?:6
+            )
+        }
+        BusterData.refreshBuster(GetEndpointPath.GAME_API)
         observeWordleList()
         fetchWordleGameDetails()
     }
@@ -110,6 +119,8 @@ internal class WordleGameViewModel @Inject constructor(
                         context.showToast(wordLength.toString())
 
                         loader(false)
+
+                        fetchHint()
                     }
                 }
             }
@@ -172,6 +183,20 @@ internal class WordleGameViewModel @Inject constructor(
             }
         }
     }
+
+    private fun fetchHint(){
+        viewModelScope.launch {
+            val response = wordleRepository.getWordleHintsDetails(uiState.gdId)
+            when(response){
+                is Resource.Failure -> {
+                    context.showToast(response.throwable.message)
+                }
+                is Resource.Success -> {
+                    context.showToast(response.data?.finalHint.orEmpty())
+                }
+            }
+        }
+    }
 }
 
 internal class WordleGameContract {
@@ -197,6 +222,8 @@ internal class WordleGameContract {
         val loader: Boolean = false,
         val submittedUserWordState: List<List<Pair<Char,LetterStatus>>> = listOf(),
         val attemptNo: Int = 0,
+        val totalAttempt: Int = 0,
+        val isGameEnd: Boolean = false
     ) : UiState {
 
         val isCheckEnable = currentGuess.length == wordLength

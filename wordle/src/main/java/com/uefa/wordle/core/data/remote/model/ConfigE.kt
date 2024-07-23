@@ -9,5 +9,7 @@ data class ConfigE(
     @Json(name = "baseDomain")
     val baseDomain: String?,
     @Json(name = "endPoints")
-    val endPoints: EndPoints?
+    val endPoints: EndPoints?,
+    @Json(name = "totalGameAttempt")
+    val totalGameAttempt: Int?
 )

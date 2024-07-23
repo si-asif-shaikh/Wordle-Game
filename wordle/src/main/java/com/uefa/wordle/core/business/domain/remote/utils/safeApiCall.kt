@@ -6,6 +6,7 @@ import com.uefa.wordle.core.business.domain.Resource
 import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.BaseResponse
 import com.uefa.wordle.core.data.remote.model.DataValue
+import com.uefa.wordle.core.data.remote.model.MultiTypeBaseDataResponse
 import com.uefa.wordle.core.data.remote.model.isRetValOkay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -87,6 +88,24 @@ internal fun <E, D> BaseResponse<E>.toApiResult(
 }
 
 internal fun <E, D> BaseDataResponse<E>.toApiResult(
+    notCheckRetVal:Boolean = false,
+    mapDataBlock: (E) -> D?,
+): Resource<D> {
+    return if (isRetValOkay() || notCheckRetVal) {
+        val mapData = data?.value?.let {
+            mapDataBlock(it)
+        }
+        if (mapData != null) {
+            Resource.Success(mapData)
+        } else {
+            Resource.Failure(ApiThrowable.NullDataError)
+        }
+    } else {
+        Resource.Failure(ApiThrowable.ServerError(meta?.retVal?:0, meta?.message.orEmpty()))
+    }
+}
+
+internal fun <E, D> MultiTypeBaseDataResponse<E>.toApiResult(
     notCheckRetVal:Boolean = false,
     mapDataBlock: (DataValue<E>) -> D?,
 ): Resource<D> {

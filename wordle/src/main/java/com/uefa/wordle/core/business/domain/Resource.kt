@@ -6,6 +6,9 @@ sealed class Resource<out T> {
 
     data class Failure<T>(val throwable: ApiThrowable) : Resource<T>()
 
+    fun isSuccess() = this is Success
+
+    fun data() = (this as? Success)?.data
 
 }
 
