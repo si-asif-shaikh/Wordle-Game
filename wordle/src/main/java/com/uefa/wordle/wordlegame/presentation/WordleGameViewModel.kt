@@ -9,6 +9,7 @@ import com.uefa.wordle.core.utils.BaseViewModel
 import com.uefa.wordle.core.utils.UiEffect
 import com.uefa.wordle.core.utils.UiEvent
 import com.uefa.wordle.core.utils.UiState
+import com.uefa.wordle.wordlegame.business.domain.model.GetSubmitWordResponseType
 import com.uefa.wordle.wordlegame.business.domain.remote.model.request.SubmitWordRequest
 import com.uefa.wordle.wordlegame.business.repo.WordleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -71,19 +72,43 @@ internal class WordleGameViewModel @Inject constructor(
                 is Resource.Success -> {
                     val data = resource.data
                     data?.let {
+                        var wordLength:Int = 0
+                        var gdId:String = ""
+                        var attemptNo:Int = 0
+
+                        when(data){
+                            is GetSubmitWordResponseType.LastGameResponse -> {
+
+                                data.lastGameWordsResponse?.lastOrNull()?.let {
+                                    wordLength = it.wordLength
+                                    gdId = it.gdId
+                                    attemptNo = it.attemptNo
+                                }
+
+                                data.lastGameWordsResponse?.forEach {
+                                    wordleManager.highlightSubmittedWord(it.userSubmitflag,it.userWord)
+                                }
+
+                            }
+                            is GetSubmitWordResponseType.NewGameResponse -> {
+                                data.submitWordResponse?.let {
+                                    wordLength = it.wordLength
+                                    gdId = it.gdId
+                                    attemptNo = it.attemptNo
+                                }
+                            }
+                        }
+
                         setState {
                             copy(
-                                wordLength = it.wordLength,
-                                gdId = it.gdId,
-                                submittedUserWordState = it.userSubmitflag
+                                wordLength = wordLength,
+                                gdId = gdId,
+                                attemptNo = attemptNo
                             )
                         }
 
-                        if(it.userSubmitflag.isNotEmpty()){
-                            wordleManager.updateLastGuess(it.userWord)
-                            wordleManager.highlightSubmittedWord(it.userSubmitflag)
-                        }
-                        context.showToast(it.wordLength.toString())
+                        context.showToast(wordLength.toString())
+
                         loader(false)
                     }
                 }
@@ -98,7 +123,8 @@ internal class WordleGameViewModel @Inject constructor(
                     copy(
                         guesses = it.guessList,
                         keyboardState = it.keyboardState,
-                        currentGuess = it.currentGuess
+                        currentGuess = it.currentGuess,
+                        submittedUserWordState = it.submittedUserWordState
                     )
                 }
             }
@@ -117,7 +143,7 @@ internal class WordleGameViewModel @Inject constructor(
         viewModelScope.launch {
           val resource =  wordleRepository.submitWord(
                 submitWordRequest = SubmitWordRequest(
-                    attemptNo = 1,
+                    attemptNo = uiState.attemptNo+1,
                     langCode = "en",
                     platformId = 3,
                     tourGamedayId = uiState.gdId,
@@ -134,9 +160,13 @@ internal class WordleGameViewModel @Inject constructor(
                 }
                 is Resource.Success -> {
                     val data = resource.data
+                    setState {
+                        copy(
+                            attemptNo = attemptNo+1
+                        )
+                    }
                     data?.let {
-                        wordleManager.setup(data.userWord)
-                        wordleManager.highlightSubmittedWord(data.userSubmitflag)
+                        wordleManager.highlightSubmittedWord(data.userSubmitflag,data.userWord)
                     }
                 }
             }
@@ -165,7 +195,8 @@ internal class WordleGameContract {
             "Booster", "Booster"
         ),
         val loader: Boolean = false,
-        val submittedUserWordState: List<Pair<Char,LetterStatus>> = emptyList<Pair<Char,LetterStatus>>()
+        val submittedUserWordState: List<List<Pair<Char,LetterStatus>>> = listOf(),
+        val attemptNo: Int = 0,
     ) : UiState {
 
         val isCheckEnable = currentGuess.length == wordLength

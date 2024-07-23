@@ -24,6 +24,7 @@ internal class WordleManager @Inject constructor() {
         }
 
     val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED }
+    var submittedUserWordState: List<List<Pair<Char,LetterStatus>>> = listOf()
 
     fun setup(target: String) {
         targetWord = target
@@ -89,9 +90,10 @@ internal class WordleManager @Inject constructor() {
         _currentGuess = lastGuess
     }
 
-    fun highlightSubmittedWord(userSubmitflag: List<Pair<Char,LetterStatus>>) {
-        val newGuesses = currentWordleGuessList + currentGuess
+    fun highlightSubmittedWord(userSubmitflag: List<Pair<Char,LetterStatus>>,guessWord: String) {
+        val newGuesses = currentWordleGuessList + guessWord
         val newKeyboardState = _wordleGuessListState.value.keyboardState.toMutableMap()
+        submittedUserWordState += listOf(userSubmitflag)
 
         userSubmitflag.forEach{ (letter, state) ->
             if(newKeyboardState[letter] == LetterStatus.UNUSED || newKeyboardState[letter] == LetterStatus.ABSENT)
@@ -101,7 +103,8 @@ internal class WordleManager @Inject constructor() {
         _wordleGuessListState.value = _wordleGuessListState.value.copy(
             guessList = newGuesses,
             keyboardState = newKeyboardState,
-            currentGuess = ""
+            currentGuess = "",
+            submittedUserWordState =  submittedUserWordState
         )
     }
 }
@@ -110,6 +113,7 @@ internal data class WordleUseResult(
     val guessList: List<String> = listOf(),
     val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED },
     val currentGuess: String = "",
+    val submittedUserWordState: List<List<Pair<Char,LetterStatus>>> = listOf()
 ) {
 }
 
