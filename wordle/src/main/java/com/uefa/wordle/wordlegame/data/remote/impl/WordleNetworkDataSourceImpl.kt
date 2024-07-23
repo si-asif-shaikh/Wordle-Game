@@ -10,12 +10,15 @@ import com.uefa.wordle.wordlegame.business.domain.model.SubmitWordResponse
 import com.uefa.wordle.wordlegame.business.domain.model.WordleHintsDetails
 import com.uefa.wordle.wordlegame.business.domain.remote.model.request.SubmitWordRequest
 import com.uefa.wordle.wordlegame.business.domain.remote.model.request.toEntity
+import com.uefa.wordle.wordlegame.data.remote.mapper.SubmitWordResponseDMapper
 import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
+import com.uefa.wordle.wordlegame.presentation.LetterStatus
 import javax.inject.Inject
 
 internal class WordleNetworkDataSourceImpl @Inject constructor(
     private val wordleApiService: WordleApiService,
-    private val endpointManager: EndpointManager
+    private val endpointManager: EndpointManager,
+    private val submitWordResponseDMapper: SubmitWordResponseDMapper
 ) : WordleNetworkDataSource {
 
     override suspend fun getWordleHintDetails(tourGameDayId: String): Resource<WordleHintsDetails?> {
@@ -55,39 +58,19 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
                 when (dataValue) {
                     is DataValue.SingleValue -> {
                         val data = dataValue.value
-                        data?.run {
-                            SubmitWordResponse(
-                                attemptNo = attemptNo ?: attemptno ?: 0,
-                                gdId = gdId ?: gdid ?: "",
-                                gtFlag = gtFlag ?: 0,
-                                isHintuse = isHintuse ?: ishintuse ?: 0,
-                                mastWord = mastWord ?: mastword ?: "",
-                                userAttemptNo = userAttemptNo ?: 0,
-                                userPoint = userPoint ?: userpoint ?: 0,
-                                userSubmitflag = userSubmitflag ?: usersubmitflag ?: listOf(),
-                                userWord = userWord ?: userword ?: "",
-                                wordLength = wordLength ?: wordlength ?: 0
-                            )
+                        data?.let {
+                            submitWordResponseDMapper.map(it)
                         }
                     }
 
                     is DataValue.ValueList -> {
                         val data = dataValue.value?.firstOrNull()
-                        data?.run {
-                            SubmitWordResponse(
-                                attemptNo = attemptNo ?: attemptno ?: 0,
-                                gdId = gdId ?: gdid ?: "",
-                                gtFlag = gtFlag ?: 0,
-                                isHintuse = isHintuse ?: ishintuse ?: 0,
-                                mastWord = mastWord ?: mastword ?: "",
-                                userAttemptNo = userAttemptNo ?: 0,
-                                userPoint = userPoint ?: userpoint ?: 0,
-                                userSubmitflag = userSubmitflag ?: usersubmitflag ?: listOf(),
-                                userWord = userWord ?: userword ?: "",
-                                wordLength = wordLength ?: wordlength ?: 0
-                            )
+                        data?.let {
+                            submitWordResponseDMapper.map(it)
                         }
                     }
+
+                    is DataValue.ErrorValue -> null
                 }
             }
         }
@@ -106,39 +89,19 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
                 when (dataValue) {
                     is DataValue.SingleValue -> {
                         val data = dataValue.value
-                        data?.run {
-                            SubmitWordResponse(
-                                attemptNo = attemptNo ?: attemptno ?: 0,
-                                gdId = gdId ?: gdid ?: "",
-                                gtFlag = gtFlag ?: 0,
-                                isHintuse = isHintuse ?: ishintuse ?: 0,
-                                mastWord = mastWord ?: mastword ?: "",
-                                userAttemptNo = userAttemptNo ?: 0,
-                                userPoint = userPoint ?: userpoint ?: 0,
-                                userSubmitflag = userSubmitflag ?: usersubmitflag ?: listOf(),
-                                userWord = userWord ?: userword ?: "",
-                                wordLength = wordLength ?: wordlength ?: 0
-                            )
+                        data?.let {
+                            submitWordResponseDMapper.map(it)
                         }
                     }
 
                     is DataValue.ValueList -> {
                         val data = dataValue.value?.firstOrNull()
-                        data?.run {
-                            SubmitWordResponse(
-                                attemptNo = attemptNo ?: attemptno ?: 0,
-                                gdId = gdId ?: gdid ?: "",
-                                gtFlag = gtFlag ?: 0,
-                                isHintuse = isHintuse ?: ishintuse ?: 0,
-                                mastWord = mastWord ?: mastword ?: "",
-                                userAttemptNo = userAttemptNo ?: 0,
-                                userPoint = userPoint ?: userpoint ?: 0,
-                                userSubmitflag = userSubmitflag ?: usersubmitflag ?: listOf(),
-                                userWord = userWord ?: userword ?: "",
-                                wordLength = wordLength ?: wordlength ?: 0
-                            )
+                        data?.let {
+                            submitWordResponseDMapper.map(it)
                         }
                     }
+
+                    is DataValue.ErrorValue -> null
                 }
             }
         }

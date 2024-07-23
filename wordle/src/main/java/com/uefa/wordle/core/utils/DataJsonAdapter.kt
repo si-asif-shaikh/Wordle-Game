@@ -32,43 +32,65 @@ internal class DataJsonAdapter<T>(
             while (reader.hasNext()) {
                 when (reader.nextName()) {
                     "Data" -> {
-                        val peek = reader.peekJson()
-                        peek.beginObject()
-                        while (peek.hasNext()) {
-                            when (peek.nextName()) {
-                                "Value" -> {
-                                    Log.d(TAG, "Value Response")
-                                    value = if (peek.peek() == JsonReader.Token.BEGIN_OBJECT) {
-                                        val modelData = moshi.adapter<T>(valueType).fromJson(peek)
-                                        Log.d(TAG, "object ${modelData.toString()}")
-                                        DataValue.SingleValue(value = modelData)
-                                    } else if (peek.peek() == JsonReader.Token.BEGIN_ARRAY) {
-                                        val list = moshi.adapter<List<T>>(
-                                            Types.newParameterizedType(
-                                                List::class.java,
-                                                valueType
-                                            )
-                                        ).fromJson(peek)
-                                        Log.d(TAG, "list ${list.toString()}")
-                                        DataValue.ValueList(value = list)
-                                    } else {
-                                        Log.d(TAG, "Value Null")
-                                        null
+                        if (reader.peek() == JsonReader.Token.NULL) {
+                            reader.skipValue()
+                        } else {
+                            val peek = reader.peekJson()
+                            peek.beginObject()
+                            while (peek.hasNext()) {
+                                when (peek.nextName()) {
+                                    "Value" -> {
+//                                    Log.d(TAG, "Value Response")
+                                        value = if (peek.peek() == JsonReader.Token.BEGIN_OBJECT) {
+                                            val modelData =
+                                                moshi.adapter<T>(valueType).fromJson(peek)
+//                                        Log.d(TAG, "object ${modelData.toString()}")
+                                            DataValue.SingleValue(value = modelData)
+                                        } else if (peek.peek() == JsonReader.Token.BEGIN_ARRAY) {
+                                            val list = moshi.adapter<List<T>>(
+                                                Types.newParameterizedType(
+                                                    List::class.java,
+                                                    valueType
+                                                )
+                                            ).fromJson(peek)
+//                                        Log.d(TAG, "list ${list.toString()}")
+                                            DataValue.ValueList(value = list)
+                                        } else if (peek.peek() == JsonReader.Token.NUMBER) {
+                                            peek.skipValue()
+//                                        val ratVal = reader.nextInt()
+                                            DataValue.ErrorValue(null)
+                                        } else {
+                                            peek.skipValue()
+//                                        Log.d(TAG, "Value Null")
+                                            null
+                                        }
                                     }
-                                }
 
-                                "FeedTime" -> {
-                                    feedTime = moshi.adapter(Time::class.java).fromJson(peek)
-                                    Log.d(TAG, "feed ${feedTime.toString()}")
+                                    "FeedTime" -> {
+                                        if (peek.peek() == JsonReader.Token.NULL) {
+                                            peek.skipValue()
+                                        } else {
+                                            feedTime = moshi.adapter(Time::class.java).fromJson(peek)
+                                        }
+//                                        Log.d(TAG, "feed ${feedTime.toString()}")
+                                    }
+
+                                    else -> peek.skipValue()
                                 }
                             }
+                            peek.endObject()
+                            reader.skipValue()
                         }
-                        peek.endObject()
-                        reader.skipValue()
                     }
 
                     "Meta" -> {
-                        meta = moshi.adapter(Meta::class.java).fromJson(reader)
+
+                        if (reader.peek() == JsonReader.Token.NULL) {
+                            reader.skipValue()
+                        } else {
+                            meta = moshi.adapter(Meta::class.java).fromJson(reader)
+                        }
+
                     }
 
                     else -> reader.skipValue()

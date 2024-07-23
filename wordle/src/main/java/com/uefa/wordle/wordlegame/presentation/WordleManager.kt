@@ -4,11 +4,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class WordleManager @Inject constructor() {
+internal class WordleManager @Inject constructor() {
 
     private var _currentGuess: String = ""
     val currentGuess: String get() = _currentGuess
-
     var targetWord: String = ""
 
 
@@ -86,23 +85,16 @@ class WordleManager @Inject constructor() {
         )
     }
 
-    fun highlightSubmittedWord(userSubmitflag: List<Int>) {
+    fun updateLastGuess(lastGuess:String){
+        _currentGuess = lastGuess
+    }
+
+    fun highlightSubmittedWord(userSubmitflag: List<Pair<Char,LetterStatus>>) {
         val newGuesses = currentWordleGuessList + currentGuess
         val newKeyboardState = _wordleGuessListState.value.keyboardState.toMutableMap()
 
-        userSubmitflag.forEachIndexed{ index, state ->
-            val letter = targetWord[index]
-            when(state){
-                WordState.WRONG_WORD.state -> {
-                    newKeyboardState[letter] = LetterStatus.ABSENT
-                }
-                WordState.WORD_PRESENT.state -> {
-                    newKeyboardState[letter] = LetterStatus.CORRECT
-                }
-                WordState.CORRECT_PLACE.state -> {
-                    newKeyboardState[letter] = LetterStatus.PRESENT
-                }
-            }
+        userSubmitflag.forEach{ (letter, state) ->
+            newKeyboardState[letter] = state
         }
 
         _wordleGuessListState.value = _wordleGuessListState.value.copy(
@@ -113,16 +105,18 @@ class WordleManager @Inject constructor() {
     }
 }
 
-data class WordleUseResult(
+internal data class WordleUseResult(
     val guessList: List<String> = listOf(),
     val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED },
-    val currentGuess: String = ""
-)
+    val currentGuess: String = "",
+) {
+    val highlightsWords: Map<Char, LetterStatus> = currentGuess.map { char -> Pair(char,LetterStatus.UNUSED) }.toMap()
+}
 
-enum class LetterStatus {
+internal enum class LetterStatus {
     UNUSED, CORRECT, PRESENT, ABSENT
 }
 
-enum class WordState(val state:Int){
-    WRONG_WORD(0),WORD_PRESENT(1),CORRECT_PLACE(2)
+internal enum class WordState(val state:Int){
+   UNUSED_WORD(-1), WRONG_WORD(0),WORD_PRESENT(1),CORRECT_PLACE(2)
 }

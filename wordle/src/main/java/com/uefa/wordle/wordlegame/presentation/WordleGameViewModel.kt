@@ -74,10 +74,15 @@ internal class WordleGameViewModel @Inject constructor(
                         setState {
                             copy(
                                 wordLength = it.wordLength,
-                                gdId = it.gdId
+                                gdId = it.gdId,
+                                submittedUserWordState = it.userSubmitflag
                             )
                         }
-                        wordleManager.setup(target = "")
+
+                        if(it.userSubmitflag.isNotEmpty()){
+                            wordleManager.updateLastGuess(it.userWord)
+                            wordleManager.highlightSubmittedWord(it.userSubmitflag)
+                        }
                         context.showToast(it.wordLength.toString())
                         loader(false)
                     }
@@ -159,7 +164,8 @@ internal class WordleGameContract {
         val boosterList: List<String> = listOf(
             "Booster", "Booster"
         ),
-        val loader: Boolean = false
+        val loader: Boolean = false,
+        val submittedUserWordState: List<Pair<Char,LetterStatus>> = emptyList<Pair<Char,LetterStatus>>()
     ) : UiState {
 
         val isCheckEnable = currentGuess.length == wordLength

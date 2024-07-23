@@ -237,7 +237,7 @@ internal fun GuessBoard(state: WordleGameContract.State) {
                     )
 
                     val targetColor =
-                        getLetterColor(state = state, rowIndex = rowIndex, letter = letter)
+                        getLetterColor(state = state, rowIndex = rowIndex,colIndex = colIndex, letter = letter)
                     val isFlipped = state.guesses.size > rowIndex
 
                     FlipCard(
@@ -318,12 +318,12 @@ internal fun shouldHighlightBackground(
 }
 
 @Composable
-internal fun getLetterColor(state: WordleGameContract.State, rowIndex: Int, letter: Char): Color {
+internal fun getLetterColor(state: WordleGameContract.State, rowIndex: Int,colIndex: Int, letter: Char): Color {
     return if (shouldHighlightBackground(
             gameState = state,
             rowIndex = rowIndex
         )
-    ) when (state.keyboardState[letter]) {
+    ) when (state.submittedUserWordState.getOrNull(colIndex)?.second) {
         LetterStatus.CORRECT -> Color.Green
         LetterStatus.PRESENT -> Color.Yellow
         LetterStatus.ABSENT -> Theme.colors.elevation.elevation03
@@ -345,7 +345,7 @@ internal fun getKeyboardColor(keyboardState: Map<Char, LetterStatus>, letter: Ch
 
 
 @Composable
-fun GridKeyboard(
+internal fun GridKeyboard(
     keyboardState: Map<Char, LetterStatus>,
     onKeyPress: (Char) -> Unit,
     onBackspacePress: () -> Unit
