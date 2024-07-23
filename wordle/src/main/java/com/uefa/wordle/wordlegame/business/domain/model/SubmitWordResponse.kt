@@ -3,8 +3,9 @@ package com.uefa.wordle.wordlegame.business.domain.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import com.uefa.wordle.wordlegame.presentation.LetterStatus
 
-data class SubmitWordResponse(
+internal data class SubmitWordResponse(
     val attemptNo: Int,
     val gdId: String,
     val gtFlag: Int,
@@ -12,7 +13,7 @@ data class SubmitWordResponse(
     val mastWord: String?,
     val userAttemptNo: Int,
     val userPoint: Int,
-    val userSubmitflag: List<Int>,
+    val userSubmitflag: List<Pair<Char,LetterStatus>>,
     val userWord: String,
     val wordLength: Int
 )

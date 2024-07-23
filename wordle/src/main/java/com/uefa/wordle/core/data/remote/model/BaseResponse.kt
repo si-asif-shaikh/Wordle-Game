@@ -69,6 +69,7 @@ internal fun BaseDataResponse<*>.isRetValOkay(): Boolean {
 }
 
 sealed class DataValue<T> {
+    data class ErrorValue<T>(val retVal:Int?) : DataValue<T>()
     data class ValueList<T>(val value: List<T>?) : DataValue<T>()
     data class SingleValue<T>(val value: T?) : DataValue<T>()
 }
