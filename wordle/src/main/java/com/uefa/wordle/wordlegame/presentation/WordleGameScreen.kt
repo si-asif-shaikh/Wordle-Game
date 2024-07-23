@@ -323,7 +323,7 @@ internal fun getLetterColor(state: WordleGameContract.State, rowIndex: Int,colIn
             gameState = state,
             rowIndex = rowIndex
         )
-    ) when (state.submittedUserWordState.getOrNull(colIndex)?.second) {
+    ) when (state.submittedUserWordState.getOrNull(rowIndex)?.getOrNull(colIndex)?.second) {
         LetterStatus.CORRECT -> Color.Green
         LetterStatus.PRESENT -> Color.Yellow
         LetterStatus.ABSENT -> Theme.colors.elevation.elevation03

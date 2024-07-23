@@ -5,6 +5,7 @@ import com.uefa.wordle.core.business.domain.remote.utils.EndpointManager
 import com.uefa.wordle.core.business.domain.remote.utils.safeApiCall
 import com.uefa.wordle.core.business.domain.remote.utils.toApiResult
 import com.uefa.wordle.core.data.remote.model.DataValue
+import com.uefa.wordle.wordlegame.business.domain.model.GetSubmitWordResponseType
 import com.uefa.wordle.wordlegame.business.domain.remote.WordleNetworkDataSource
 import com.uefa.wordle.wordlegame.business.domain.model.SubmitWordResponse
 import com.uefa.wordle.wordlegame.business.domain.model.WordleHintsDetails
@@ -76,7 +77,7 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSubmittedWord(): Resource<SubmitWordResponse> {
+    override suspend fun getSubmittedWord(): Resource<GetSubmitWordResponseType> {
         return safeApiCall {
             val url = endpointManager.getSubmittedWord()
 
@@ -89,16 +90,18 @@ internal class WordleNetworkDataSourceImpl @Inject constructor(
                 when (dataValue) {
                     is DataValue.SingleValue -> {
                         val data = dataValue.value
-                        data?.let {
+                        GetSubmitWordResponseType.NewGameResponse(data?.let {
                             submitWordResponseDMapper.map(it)
-                        }
+                        })
                     }
 
                     is DataValue.ValueList -> {
-                        val data = dataValue.value?.firstOrNull()
-                        data?.let {
-                            submitWordResponseDMapper.map(it)
-                        }
+                        val data = dataValue.value
+                        GetSubmitWordResponseType.LastGameResponse(data?.mapNotNull {
+                            it?.let {
+                                submitWordResponseDMapper.map(it)
+                            }
+                        })
                     }
 
                     is DataValue.ErrorValue -> null

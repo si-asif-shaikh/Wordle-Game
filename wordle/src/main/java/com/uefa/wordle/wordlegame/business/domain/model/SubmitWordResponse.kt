@@ -1,8 +1,6 @@
 package com.uefa.wordle.wordlegame.business.domain.model
 
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
 import com.uefa.wordle.wordlegame.presentation.LetterStatus
 
 internal data class SubmitWordResponse(
@@ -17,3 +15,14 @@ internal data class SubmitWordResponse(
     val userWord: String,
     val wordLength: Int
 )
+
+internal sealed class GetSubmitWordResponseType{
+
+    data class NewGameResponse(
+        val submitWordResponse: SubmitWordResponse?
+    ) : GetSubmitWordResponseType()
+
+    data class LastGameResponse(
+        val lastGameWordsResponse: List<SubmitWordResponse>?
+    ): GetSubmitWordResponseType()
+}
