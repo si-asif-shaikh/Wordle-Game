@@ -94,7 +94,8 @@ internal class WordleManager @Inject constructor() {
         val newKeyboardState = _wordleGuessListState.value.keyboardState.toMutableMap()
 
         userSubmitflag.forEach{ (letter, state) ->
-            newKeyboardState[letter] = state
+            if(newKeyboardState[letter] == LetterStatus.UNUSED || newKeyboardState[letter] == LetterStatus.ABSENT)
+                newKeyboardState[letter] = state
         }
 
         _wordleGuessListState.value = _wordleGuessListState.value.copy(
@@ -110,13 +111,8 @@ internal data class WordleUseResult(
     val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED },
     val currentGuess: String = "",
 ) {
-    val highlightsWords: Map<Char, LetterStatus> = currentGuess.map { char -> Pair(char,LetterStatus.UNUSED) }.toMap()
 }
 
 internal enum class LetterStatus {
     UNUSED, CORRECT, PRESENT, ABSENT
-}
-
-internal enum class WordState(val state:Int){
-   UNUSED_WORD(-1), WRONG_WORD(0),WORD_PRESENT(1),CORRECT_PLACE(2)
 }
