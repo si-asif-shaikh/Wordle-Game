@@ -29,7 +29,7 @@ class Wordle {
             locale: String = "en"
         ) {
             application = context.applicationContext as Application
-            FantasyConstant.setup(environment, versionName, locale)
+            WordleConstant.setup(environment, versionName, locale)
 //            FantasyAuthManager.init()
             FantasyRetrofitClient.init(application)
         }

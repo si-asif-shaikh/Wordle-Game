@@ -11,5 +11,7 @@ data class EndPoints(
     @Json(name = "getSubmittedWord")
     val getSubmittedWord: String?,
     @Json(name = "submitWordUrl")
-    val submitWordUrl: String?
+    val submitWordUrl: String?,
+    @Json(name = "loginUrl")
+    val loginUrl:String?
 )

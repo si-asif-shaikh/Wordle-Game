@@ -8,7 +8,9 @@ class ConfigEntityToDomain : Mapper<ConfigE, Config> {
     override fun map(from: ConfigE): Config {
         return from.run {
             Config(
+                totalGameAttempt = totalGameAttempt?:6,
                 baseDomain = baseDomain.orEmpty(),
+                loginUrl = endPoints?.loginUrl.orEmpty(),
                 getHintsUrl = endPoints?.getHintsUrl.orEmpty(),
                 submitWordUrl = endPoints?.submitWordUrl.orEmpty(),
                 getSubmittedWord = endPoints?.getSubmittedWord.orEmpty()

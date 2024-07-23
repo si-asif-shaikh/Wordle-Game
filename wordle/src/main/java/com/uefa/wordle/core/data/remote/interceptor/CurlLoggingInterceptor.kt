@@ -1,6 +1,6 @@
-package com.si.corefantasy.data.remote.interceptor
+package com.uefa.wordle.core.data.remote.interceptor
 
-import android.util.Log
+import com.uefa.wordle.core.business.utils.Logger
 import okhttp3.Interceptor
 import okhttp3.Response
 import okio.Buffer
@@ -102,6 +102,6 @@ object CurlPrinter {
     }
 
     private fun log(msg: String) {
-        Log.d(sTag, msg)
+        Logger.d(sTag, msg)
     }
 }

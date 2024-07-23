@@ -34,6 +34,22 @@ internal data class BaseDataResponse<T>(
 @JsonClass(generateAdapter = true)
 internal data class Data<T>(
     @Json(name = "Value")
+    val value: T?,
+    @Json(name = "FeedTime")
+    val feedTime: Time?,
+)
+
+@JsonClass(generateAdapter = true)
+internal data class MultiTypeBaseDataResponse<T>(
+    @Json(name = "Data")
+    val data: MultiTypeData<T>?,
+    @Json(name = "Meta")
+    val meta: Meta?,
+)
+
+@JsonClass(generateAdapter = true)
+internal data class MultiTypeData<T>(
+    @Json(name = "Value")
     val value: DataValue<T>?,
     @Json(name = "FeedTime")
     val feedTime: Time?,
@@ -65,6 +81,10 @@ internal fun BaseResponse<*>.isRetValOkay(): Boolean {
 }
 
 internal fun BaseDataResponse<*>.isRetValOkay(): Boolean {
+    return meta?.retVal == 1
+}
+
+internal fun MultiTypeBaseDataResponse<*>.isRetValOkay(): Boolean {
     return meta?.retVal == 1
 }
 

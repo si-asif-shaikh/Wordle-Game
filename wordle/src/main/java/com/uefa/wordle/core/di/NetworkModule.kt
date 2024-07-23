@@ -4,6 +4,8 @@ import com.squareup.moshi.Moshi
 import com.uefa.wordle.core.business.domain.prefs.PreferenceManager
 import com.uefa.wordle.core.business.domain.remote.utils.EndpointManager
 import com.uefa.wordle.core.business.domain.remote.utils.EndpointManagerImpl
+import com.uefa.wordle.core.data.remote.buster.BusterInterceptor
+import com.uefa.wordle.core.data.remote.interceptor.CookieInterceptor
 import com.uefa.wordle.core.data.remote.interceptor.RequestInterceptor
 import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.sdk.FantasyRetrofitClient
@@ -56,6 +58,19 @@ internal object NetworkModule {
     }
 
 
+    @Singleton
+    @Provides
+    fun provideBusterInterceptor(preferenceManager: PreferenceManager): BusterInterceptor {
+        return BusterInterceptor()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCookieInterceptor(preferenceManager: PreferenceManager): CookieInterceptor {
+        return CookieInterceptor(preferenceManager)
+    }
+
+
 }
 
 @EntryPoint
@@ -65,5 +80,9 @@ internal interface NetworkModuleEntryPoint {
     fun getRequestInterceptor(): RequestInterceptor
 
     fun getResponseInterceptor(): ResponseInterceptor
+
+    fun getBusterInterceptor(): BusterInterceptor
+
+    fun getCookieInterceptor(): CookieInterceptor
 
 }

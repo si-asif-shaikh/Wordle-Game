@@ -4,14 +4,13 @@ import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.rawType
-import com.uefa.wordle.core.data.remote.model.BaseDataResponse
-import com.uefa.wordle.core.data.remote.model.Data
+import com.uefa.wordle.core.data.remote.model.MultiTypeBaseDataResponse
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
 class DataJsonAdapterFactory : JsonAdapter.Factory {
     override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
-        if (Types.getRawType(type) == BaseDataResponse::class.java) {
+        if (Types.getRawType(type) == MultiTypeBaseDataResponse::class.java) {
             val parameterizedType = type as? ParameterizedType
             val valueType = parameterizedType?.actualTypeArguments?.get(0)?.rawType
             if (valueType != null) {
