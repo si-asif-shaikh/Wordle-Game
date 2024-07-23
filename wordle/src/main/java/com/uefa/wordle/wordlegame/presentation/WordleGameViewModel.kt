@@ -77,7 +77,7 @@ internal class WordleGameViewModel @Inject constructor(
                                 gdId = it.gdId
                             )
                         }
-//                        wordleManager.setup(target = it.word)
+                        wordleManager.setup(target = "")
                         context.showToast(it.wordLength.toString())
                         loader(false)
                     }
@@ -128,7 +128,11 @@ internal class WordleGameViewModel @Inject constructor(
                     context.showToast(resource.throwable.message)
                 }
                 is Resource.Success -> {
-
+                    val data = resource.data
+                    data?.let {
+                        wordleManager.setup(data.userWord)
+                        wordleManager.highlightSubmittedWord(data.userSubmitflag)
+                    }
                 }
             }
         }

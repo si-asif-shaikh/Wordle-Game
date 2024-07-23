@@ -5,6 +5,7 @@ import com.uefa.wordle.core.business.domain.ApiThrowable
 import com.uefa.wordle.core.business.domain.Resource
 import com.uefa.wordle.core.data.remote.model.BaseDataResponse
 import com.uefa.wordle.core.data.remote.model.BaseResponse
+import com.uefa.wordle.core.data.remote.model.DataValue
 import com.uefa.wordle.core.data.remote.model.isRetValOkay
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -87,7 +88,7 @@ internal fun <E, D> BaseResponse<E>.toApiResult(
 
 internal fun <E, D> BaseDataResponse<E>.toApiResult(
     notCheckRetVal:Boolean = false,
-    mapDataBlock: (E) -> D?,
+    mapDataBlock: (DataValue<E>) -> D?,
 ): Resource<D> {
     return if (isRetValOkay() || notCheckRetVal) {
         val mapData = data?.value?.let {
@@ -99,6 +100,6 @@ internal fun <E, D> BaseDataResponse<E>.toApiResult(
             Resource.Failure(ApiThrowable.NullDataError)
         }
     } else {
-        Resource.Failure(ApiThrowable.ServerError(meta.retVal, meta.message.orEmpty()))
+        Resource.Failure(ApiThrowable.ServerError(meta?.retVal?:0, meta?.message.orEmpty()))
     }
 }

@@ -36,6 +36,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import com.uefa.wordle.theming.Theme
 import com.uefa.gaminghub.ui.theme.GaminghubTheme
 import com.uefa.wordle.CoreGame
@@ -62,32 +66,50 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    var openWordleGame by remember {
-                        mutableStateOf(false)
-                    }
+                    val navController = rememberNavController()
 
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
+                    NavHost(navController = navController, startDestination = "onboarding") {
 
-                        DefaultCard(
-                            modifier = Modifier
-                                .padding(10.dp),
-                            onButtonClick = {
-                                openWordleGame = true
-                            },
-                            imageUrl = "",
-                            title = "Wordle",
-                            subTitle = "Wordle Game",
-                            buttonText = "Start"
-                        )
-                    }
+                        navigation("card","onboarding"){
 
-                    if (openWordleGame) {
-                        CoreGame()
-//                            openWordleGame = false
+                            composable("card"){
+
+                                var openWordleGame by remember {
+                                    mutableStateOf(false)
+                                }
+
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+
+                                    DefaultCard(
+                                        modifier = Modifier
+                                            .padding(10.dp),
+                                        onButtonClick = {
+                                            openWordleGame = true
+                                        },
+                                        imageUrl = "",
+                                        title = "Wordle",
+                                        subTitle = "Wordle Game",
+                                        buttonText = "Start"
+                                    )
+                                }
+
+                                if (openWordleGame) {
+                                    navController.navigate("wordleGame")
+                                    openWordleGame = false
+                                }
+
+                            }
+
+                            composable("wordleGame"){
+                                CoreGame()
+                            }
+
+                        }
+
                     }
 
                 }

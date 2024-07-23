@@ -28,15 +28,15 @@ internal data class BaseDataResponse<T>(
     @Json(name = "Data")
     val data: Data<T>?,
     @Json(name = "Meta")
-    val meta: Meta,
+    val meta: Meta?,
 )
 
 @JsonClass(generateAdapter = true)
 internal data class Data<T>(
+    @Json(name = "Value")
+    val value: DataValue<T>?,
     @Json(name = "FeedTime")
     val feedTime: Time?,
-    @Json(name = "Value")
-    val value: T?,
 )
 
 @JsonClass(generateAdapter = true)
@@ -65,5 +65,10 @@ internal fun BaseResponse<*>.isRetValOkay(): Boolean {
 }
 
 internal fun BaseDataResponse<*>.isRetValOkay(): Boolean {
-    return meta.retVal == 1
+    return meta?.retVal == 1
+}
+
+sealed class DataValue<T> {
+    data class ValueList<T>(val value: List<T>?) : DataValue<T>()
+    data class SingleValue<T>(val value: T?) : DataValue<T>()
 }

@@ -3,9 +3,11 @@ package com.uefa.wordle.core.sdk
 import android.content.Context
 import com.si.corefantasy.data.remote.interceptor.CurlLoggingInterceptor
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.uefa.gaminghub.BuildConfig
 import com.uefa.wordle.core.data.remote.service.FeedApiService
 import com.uefa.wordle.core.di.NetworkModuleEntryPoint
+import com.uefa.wordle.core.utils.DataJsonAdapterFactory
 import com.uefa.wordle.wordlegame.data.remote.service.WordleApiService
 import dagger.hilt.android.EntryPointAccessors
 import okhttp3.OkHttpClient
@@ -45,7 +47,9 @@ internal class FantasyRetrofitClient {
                 httpClient.addInterceptor(CurlLoggingInterceptor("coregaming:curl:"))
             }
             val moshi = Moshi.Builder()
-//                .add(ApiResponseAdapterFactory())
+//                .add(BaseDataResponseAdapterFactory())
+                .add(DataJsonAdapterFactory())
+                .add(KotlinJsonAdapterFactory())
                 .build()
 
             retrofit = Retrofit.Builder()
