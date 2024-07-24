@@ -44,6 +44,7 @@ import com.uefa.gaminghub.R
 import com.uefa.wordle.core.presentation.LoadingScreen
 import com.uefa.wordle.core.presentation.Theme
 import com.uefa.wordle.core.presentation.TopAppToolbar
+import com.uefa.wordle.core.sdk.Wordle
 
 
 @Composable
@@ -84,7 +85,7 @@ private fun WordleGameScreen(
                 actionIcon = {
                     IconButton(
                         onClick = {
-
+                            Wordle.close()
                         }
                     ) {
 
