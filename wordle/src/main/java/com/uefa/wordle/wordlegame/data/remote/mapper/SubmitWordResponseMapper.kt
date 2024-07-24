@@ -11,6 +11,7 @@ internal class SubmitWordResponseDMapper @Inject constructor() : Mapper<SubmitWo
         return from.run {
             val userSubmitFlag = userSubmitflag ?: usersubmitflag ?: listOf()
             val userWord = userWord ?: userword ?: ""
+            val mastWord = mastWord ?: mastword ?: ""
             val wordState = userWord.toList().zip(userSubmitFlag).map {
                 Pair(
                     first = it.first,
@@ -28,12 +29,14 @@ internal class SubmitWordResponseDMapper @Inject constructor() : Mapper<SubmitWo
                 gdId = gdId ?: gdid ?: "",
                 gtFlag = gtFlag ?: 0,
                 isHintuse = isHintuse ?: ishintuse ?: 0,
-                mastWord = mastWord ?: mastword ?: "",
+                mastWord = mastWord,
                 userAttemptNo = userAttemptNo ?: 0,
                 userPoint = userPoint ?: userpoint ?: 0,
                 userSubmitflag = wordState,
                 userWord = userWord,
-                wordLength = wordLength ?: wordlength ?: 0
+                wordLength = wordLength ?: wordlength ?: 0,
+                isGameFinished = mastWord.isNotEmpty(),
+                isWinner = userWord == mastWord
             )
         }
     }

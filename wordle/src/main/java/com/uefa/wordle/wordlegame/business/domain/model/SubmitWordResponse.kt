@@ -13,7 +13,9 @@ internal data class SubmitWordResponse(
     val userPoint: Int,
     val userSubmitflag: List<Pair<Char,LetterStatus>>,
     val userWord: String,
-    val wordLength: Int
+    val wordLength: Int,
+    val isGameFinished: Boolean,
+    val isWinner: Boolean
 )
 
 internal sealed class GetSubmitWordResponseType{
