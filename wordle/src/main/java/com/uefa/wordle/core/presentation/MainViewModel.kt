@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.uefa.wordle.core.business.interactor.InitializeGameUseCase
 import com.uefa.wordle.core.navigation.AppComposeNavigator
+import com.uefa.wordle.core.sdk.Wordle
 import com.uefa.wordle.core.utils.BaseViewModel
 import com.uefa.wordle.core.utils.UiEffect
 import com.uefa.wordle.core.utils.UiEvent
@@ -38,8 +39,9 @@ internal class MainViewModel @Inject constructor(
         viewModelScope.launch {
             when(val result = initializeGameUseCase.invoke()){
                 InitializeGameUseCase.Result.Failure -> {
-
+                    Wordle.clearAppToken()
                 }
+
                 InitializeGameUseCase.Result.Success -> {
                     setState {
                         copy(

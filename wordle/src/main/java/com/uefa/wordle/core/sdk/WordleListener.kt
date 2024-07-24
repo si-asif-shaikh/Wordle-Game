@@ -21,6 +21,9 @@ interface WordleListener {
      * It is used to ask to close game.
      */
     fun closeGame()
+
+    fun clearAppToken()
+
     fun openRegistrationPage()
 
     /**

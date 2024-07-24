@@ -37,8 +37,12 @@ internal class InitializeGameUseCase @Inject constructor(
 //            Store.config.filterNotNull().firstOrNull()
 //        } catch (_: Exception) {
 //        }
-        if(preferenceManager.getUserGuId().firstOrNull().isNullOrEmpty())
-            feedRepository.getLogin()
+        if(preferenceManager.getUserGuId().firstOrNull().isNullOrEmpty()){
+            when(feedRepository.getLogin()){
+                is Resource.Failure -> return Result.Failure
+                is Resource.Success -> {}
+            }
+        }
 
         return when(feedRepository.getTranslations()) {
             is Resource.Failure -> Result.Failure

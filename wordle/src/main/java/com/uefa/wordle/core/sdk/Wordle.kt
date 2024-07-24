@@ -52,6 +52,10 @@ class Wordle {
         internal fun close() {
             listener?.closeGame()
         }
+
+        fun clearAppToken() {
+            listener?.clearAppToken()
+        }
     }
 
 }
