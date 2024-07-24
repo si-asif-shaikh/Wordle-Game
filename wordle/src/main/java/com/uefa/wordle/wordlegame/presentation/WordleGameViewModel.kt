@@ -48,11 +48,13 @@ internal class WordleGameViewModel @Inject constructor(
             }
 
             is WordleGameContract.Event.OnLetterEnter -> {
-                wordleManager.addLetter(letter = event.letter)
+                if(!uiState.isGameEnd)
+                    wordleManager.addLetter(letter = event.letter)
             }
 
             WordleGameContract.Event.OnBackPressed -> {
-                wordleManager.removeLetter()
+                if(!uiState.isGameEnd)
+                    wordleManager.removeLetter()
             }
 
             WordleGameContract.Event.OnBoosterSelected -> {
@@ -88,6 +90,7 @@ internal class WordleGameViewModel @Inject constructor(
                         var wordLength: Int = 0
                         var gdId: String = ""
                         var attemptNo: Int = 0
+                        var isGameEnd: Boolean = false
 
                         when (data) {
                             is GetSubmitWordResponseType.LastGameResponse -> {
@@ -96,6 +99,7 @@ internal class WordleGameViewModel @Inject constructor(
                                     wordLength = it.wordLength
                                     gdId = it.gdId
                                     attemptNo = it.attemptNo
+                                    isGameEnd = it.isGameFinished
 
                                     if(it.isGameFinished){
                                         val message = if(it.isWinner) "You Win" else "Game Finished"
@@ -126,7 +130,8 @@ internal class WordleGameViewModel @Inject constructor(
                             copy(
                                 wordLength = wordLength,
                                 gdId = gdId,
-                                attemptNo = attemptNo
+                                attemptNo = attemptNo,
+                                isGameEnd = isGameEnd
                             )
                         }
 
@@ -185,7 +190,8 @@ internal class WordleGameViewModel @Inject constructor(
                     data?.let {
                         setState {
                             copy(
-                                attemptNo = attemptNo + 1
+                                attemptNo = attemptNo + 1,
+                                isGameEnd = data.isGameFinished
                             )
                         }
                         wordleManager.highlightSubmittedWord(data.userSubmitflag, data.userWord)
