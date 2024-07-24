@@ -34,6 +34,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -151,7 +152,9 @@ private fun WordleGameScreen(
                             modifier = Modifier
                                 .border(1.dp, Color.White, shape = RoundedCornerShape(10.dp))
                                 .width(80.dp)
-                                .height(50.dp),
+                                .height(50.dp)
+                                .clickable { onAction.invoke(WordleGameContract.Event.OnBoosterSelected) }
+                            ,
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
@@ -164,7 +167,7 @@ private fun WordleGameScreen(
 
                             Text(
                                 modifier = Modifier,
-                                text = "Booster",
+                                text = "Hint",
                                 color = Color.White
                             )
 
@@ -224,7 +227,9 @@ internal fun GuessBoard(state: WordleGameContract.State) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(10.dp),
+            .padding(vertical = 10.dp)
+            .padding(horizontal = 10.dp)
+        ,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -241,51 +246,61 @@ internal fun GuessBoard(state: WordleGameContract.State) {
                         getLetterColor(state = state, rowIndex = rowIndex,colIndex = colIndex, letter = letter)
                     val isFlipped = state.guesses.size > rowIndex
 
-                    FlipCard(
+                    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+                    val boxWidth = if(state.wordLength > 0) ((screenWidth - 20.dp) / state.wordLength) else 55.dp // Adjust the number based on your layout requirements
+                    val boxHeight = boxWidth + 5.dp
+                    val boxSpacing = 5.dp
+
+                    Box(
                         modifier = Modifier
-                            .width(55.dp)
-                            .height(60.dp)
-                            .padding(5.dp)
-                            .border(
-                                1.dp,
-                                if (!shouldHighlightBorder(
-                                        gameState = state,
-                                        rowIndex = rowIndex,
-                                        colIndex = colIndex
+                            .width(boxWidth)
+                            .height(boxHeight)
+                            .padding(boxSpacing)
+                    ) {
+                        FlipCard(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .border(
+                                    1.dp,
+                                    if (!shouldHighlightBorder(
+                                            gameState = state,
+                                            rowIndex = rowIndex,
+                                            colIndex = colIndex
+                                        )
+                                    ) Color.Transparent
+                                    else Theme.colors.base.accent01,
+                                    shape = RoundedCornerShape(14.dp)
+                                ),
+                            cardColors = targetColor,
+                            front = {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        letter.toString(),
+                                        fontSize = 24.sp,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.ExtraBold
                                     )
-                                ) Color.Transparent
-                                else Theme.colors.base.accent01,
-                                shape = RoundedCornerShape(14.dp)
-                            ),
-                        cardColors = targetColor,
-                        front = {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    letter.toString(),
-                                    fontSize = 24.sp,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.ExtraBold
-                                )
-                            }
-                        },
-                        back = {
-                            Box(
-                                modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Text(
-                                    letter.toString(),
-                                    fontSize = 24.sp,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.ExtraBold
-                                )
-                            }
-                        },
-                        isFlipped = isFlipped
-                    )
+                                }
+                            },
+                            back = {
+                                Box(
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Text(
+                                        letter.toString(),
+                                        fontSize = 24.sp,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.ExtraBold
+                                    )
+                                }
+                            },
+                            isFlipped = isFlipped
+                        )
+                    }
                 }
             }
         }
@@ -372,7 +387,7 @@ internal fun GridKeyboard(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    row.forEach { letter ->
+                    row.forEach { letter ->LetterStatus.CORRECT
                         Box(
                             modifier = Modifier
                                 .width(38.dp)

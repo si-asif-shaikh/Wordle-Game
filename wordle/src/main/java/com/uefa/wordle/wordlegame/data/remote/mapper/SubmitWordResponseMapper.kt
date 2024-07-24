@@ -16,8 +16,8 @@ internal class SubmitWordResponseDMapper @Inject constructor() : Mapper<SubmitWo
                     first = it.first,
                     second = when(it.second){
                         0 -> LetterStatus.ABSENT
-                        1 -> LetterStatus.PRESENT
-                        2 -> LetterStatus.CORRECT
+                        1 -> LetterStatus.CORRECT
+                        2 -> LetterStatus.PRESENT
                         else -> LetterStatus.UNUSED
                     }
                 )
