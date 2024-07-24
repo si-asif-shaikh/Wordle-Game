@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.annotation.RestrictTo
 import androidx.annotation.StringDef
+import com.uefa.wordle.core.business.utils.Logger
 
 class Wordle {
 
@@ -43,6 +44,7 @@ class Wordle {
             application = context.applicationContext as Application
             WordleConstant.setup(environment, versionName, locale)
 //            FantasyAuthManager.init()
+            Logger.d("Initialize")
             FantasyRetrofitClient.init(application)
         }
 
