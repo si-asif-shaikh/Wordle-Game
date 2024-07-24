@@ -104,6 +104,14 @@ class MainActivity : ComponentActivity() {
                                         navController.popBackStack()
                                     }
 
+                                    override fun clearAppToken() {
+                                        appToken = ""
+                                        with(sharedPreferences.edit()) {
+                                            putString(APP_TOKEN, "")
+                                            apply()
+                                        }
+                                    }
+
                                     override fun openRegistrationPage() {
                                     }
 
