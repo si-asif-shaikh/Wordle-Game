@@ -96,6 +96,12 @@ internal class WordleGameViewModel @Inject constructor(
                                     wordLength = it.wordLength
                                     gdId = it.gdId
                                     attemptNo = it.attemptNo
+
+                                    if(it.isGameFinished){
+                                        val message = if(it.isWinner) "You Win" else "Game Finished"
+
+                                        context.showToast(message)
+                                    }
                                 }
 
                                 data.lastGameWordsResponse?.forEach {
@@ -123,8 +129,6 @@ internal class WordleGameViewModel @Inject constructor(
                                 attemptNo = attemptNo
                             )
                         }
-
-                        context.showToast(wordLength.toString())
 
                         loader(false)
                     }
@@ -178,13 +182,20 @@ internal class WordleGameViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     val data = resource.data
-                    setState {
-                        copy(
-                            attemptNo = attemptNo + 1
-                        )
-                    }
                     data?.let {
+                        setState {
+                            copy(
+                                attemptNo = attemptNo + 1
+                            )
+                        }
                         wordleManager.highlightSubmittedWord(data.userSubmitflag, data.userWord)
+
+                        if(data.isGameFinished){
+                            val message = if(data.isWinner) "You Win" else "Game Finished"
+
+                            context.showToast(message)
+                        }
+
                     }
                 }
             }
