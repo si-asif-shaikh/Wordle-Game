@@ -54,13 +54,17 @@ internal class WordleGameViewModel @Inject constructor(
             WordleGameContract.Event.OnBackPressed -> {
                 wordleManager.removeLetter()
             }
+
+            WordleGameContract.Event.OnBoosterSelected -> {
+                fetchHint()
+            }
         }
     }
 
     init {
         setState {
             copy(
-                totalAttempt = Store.currentConfig?.totalGameAttempt?:6
+                totalAttempt = Store.currentConfig?.totalGameAttempt ?: 6
             )
         }
         BusterData.refreshBuster(GetEndpointPath.GAME_API)
@@ -81,11 +85,11 @@ internal class WordleGameViewModel @Inject constructor(
                 is Resource.Success -> {
                     val data = resource.data
                     data?.let {
-                        var wordLength:Int = 0
-                        var gdId:String = ""
-                        var attemptNo:Int = 0
+                        var wordLength: Int = 0
+                        var gdId: String = ""
+                        var attemptNo: Int = 0
 
-                        when(data){
+                        when (data) {
                             is GetSubmitWordResponseType.LastGameResponse -> {
 
                                 data.lastGameWordsResponse?.lastOrNull()?.let {
@@ -95,10 +99,14 @@ internal class WordleGameViewModel @Inject constructor(
                                 }
 
                                 data.lastGameWordsResponse?.forEach {
-                                    wordleManager.highlightSubmittedWord(it.userSubmitflag,it.userWord)
+                                    wordleManager.highlightSubmittedWord(
+                                        it.userSubmitflag,
+                                        it.userWord
+                                    )
                                 }
 
                             }
+
                             is GetSubmitWordResponseType.NewGameResponse -> {
                                 data.submitWordResponse?.let {
                                     wordLength = it.wordLength
@@ -119,8 +127,6 @@ internal class WordleGameViewModel @Inject constructor(
                         context.showToast(wordLength.toString())
 
                         loader(false)
-
-                        fetchHint()
                     }
                 }
             }
@@ -142,7 +148,7 @@ internal class WordleGameViewModel @Inject constructor(
         }
     }
 
-    private fun loader(value: Boolean){
+    private fun loader(value: Boolean) {
         setState {
             copy(
                 loader = value
@@ -150,11 +156,11 @@ internal class WordleGameViewModel @Inject constructor(
         }
     }
 
-    private fun submitWord(){
+    private fun submitWord() {
         viewModelScope.launch {
-          val resource =  wordleRepository.submitWord(
+            val resource = wordleRepository.submitWord(
                 submitWordRequest = SubmitWordRequest(
-                    attemptNo = uiState.attemptNo+1,
+                    attemptNo = uiState.attemptNo + 1,
                     langCode = "en",
                     platformId = 3,
                     tourGamedayId = uiState.gdId,
@@ -165,32 +171,34 @@ internal class WordleGameViewModel @Inject constructor(
                 )
             )
 
-            when(resource){
+            when (resource) {
                 is Resource.Failure -> {
                     context.showToast(resource.throwable.message)
                 }
+
                 is Resource.Success -> {
                     val data = resource.data
                     setState {
                         copy(
-                            attemptNo = attemptNo+1
+                            attemptNo = attemptNo + 1
                         )
                     }
                     data?.let {
-                        wordleManager.highlightSubmittedWord(data.userSubmitflag,data.userWord)
+                        wordleManager.highlightSubmittedWord(data.userSubmitflag, data.userWord)
                     }
                 }
             }
         }
     }
 
-    private fun fetchHint(){
+    private fun fetchHint() {
         viewModelScope.launch {
             val response = wordleRepository.getWordleHintsDetails(uiState.gdId)
-            when(response){
+            when (response) {
                 is Resource.Failure -> {
                     context.showToast(response.throwable.message)
                 }
+
                 is Resource.Success -> {
                     context.showToast(response.data?.finalHint.orEmpty())
                 }
@@ -202,6 +210,8 @@ internal class WordleGameViewModel @Inject constructor(
 internal class WordleGameContract {
 
     sealed class Event() : UiEvent {
+
+        object OnBoosterSelected : Event()
 
         object OnBackPressed : Event()
         data class OnLetterEnter(val letter: Char) : Event()
@@ -217,10 +227,10 @@ internal class WordleGameContract {
         val guesses: List<String> = listOf(),
         val keyboardState: Map<Char, LetterStatus> = ('A'..'Z').associateWith { LetterStatus.UNUSED },
         val boosterList: List<String> = listOf(
-            "Booster", "Booster"
+            "Booster"
         ),
         val loader: Boolean = false,
-        val submittedUserWordState: List<List<Pair<Char,LetterStatus>>> = listOf(),
+        val submittedUserWordState: List<List<Pair<Char, LetterStatus>>> = listOf(),
         val attemptNo: Int = 0,
         val totalAttempt: Int = 0,
         val isGameEnd: Boolean = false
@@ -233,6 +243,6 @@ internal class WordleGameContract {
 
 }
 
-fun Context.showToast(message:String){
-    Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+fun Context.showToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 }
