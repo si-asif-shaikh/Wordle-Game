@@ -8,8 +8,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -24,6 +29,14 @@ internal abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect :
     abstract fun createInitialState(): State
 
     var uiState by mutableStateOf(savedStateHandle?.get<State>("uiState") ?: initialState)
+
+//    private val _uiState: MutableStateFlow<State> = MutableStateFlow(savedStateHandle?.get<State>("uiState") ?: initialState)
+//    val uiState: StateFlow<State> = _uiState
+//        .onStart {
+//
+//        }
+//        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L),initialState)
+
 
     private val _event: MutableSharedFlow<Event> = MutableSharedFlow()
     val event = _event.asSharedFlow()

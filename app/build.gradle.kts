@@ -41,6 +41,7 @@ android {
     }
     buildFeatures {
         compose = true
+        dataBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
@@ -64,6 +65,8 @@ dependencies {
     implementation(libs.livedata)
     implementation(libs.compose.preview)
     implementation(libs.compose.ui)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
     debugImplementation(libs.compose.ui)
 
 

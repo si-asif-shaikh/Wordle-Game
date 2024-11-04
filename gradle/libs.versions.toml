@@ -19,6 +19,7 @@ coil = "2.4.0"
 room = "2.6.1"
 retrofit = "2.9.0"
 moshi = "1.15.1"
+moshiKotlinCodegenVersion = "1.15.0"
 okhttp = "4.12.0"
 ads = "22.6.0"
 tagmanager = "18.0.3"
@@ -34,6 +35,11 @@ test-espresso = "3.5.1"
 test-junit = "4.13.2"
 test-junit-ext = "1.1.5"
 gson = "2.10.1"
+okhttp-logging-interceptor = "4.9.0"
+converterMoshi = "2.9.0"
+activityVersion = "1.9.1"
+constraintlayout = "2.1.4"
+
 
 
 [libraries]
@@ -81,8 +87,14 @@ google-ads = { module = "com.google.android.gms:play-services-ads", version.ref 
 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+converter-moshi = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "converterMoshi" }
 moshi = { module = "com.squareup.moshi:moshi", version.ref = "moshi" }
 network-logger = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+
+
+moshi-kotlin = { module = "com.squareup.moshi:moshi-kotlin", version.ref = "moshi" }
+moshi-kotlin-codegen = { module = "com.squareup.moshi:moshi-kotlin-codegen", version.ref = "moshiKotlinCodegenVersion" }
+
 
 room = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -93,6 +105,11 @@ lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx",
 coil = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottie-compose" }
+
+okhttp = { module = "com.squareup.okhttp3:okhttp" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activityVersion" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+
 
 #{module = "org.jetbrains.kotlinx:kotlinx-coroutines-android"}
 
