@@ -1,0 +1,10 @@
+{
+  "baseDomain": "https://stg-gujarat-titans.sportz.io",
+  "endPoints": {
+    "loginUrl": "/wordle/services/api/session/user/login?waf_guid={wafguid}",
+    "getHintsUrl" : "/wordle/services/api/feeds/gethints?tourGamedayId={tourgamedayid}",
+    "submitWordUrl" : "/wordle/services/api/gameplay/user/{userguid}/submitword",
+    "getSubmittedWord" : "/wordle/services/api/gameplay/user/{userguid}/getsubmittedword"
+   },
+  "totalGameAttempt": 6
+}
